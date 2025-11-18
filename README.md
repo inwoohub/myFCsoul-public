@@ -1,5 +1,6 @@
 # myFCseoul ⚽ ( 축구 직관 웹 서비스 )
-**프로축구 직관 기록 & AI 승부 예측 웹 서비스** [**바로가기**](https://www.myfcseoul.com/)
+**프로축구 직관 기록 & AI 승부 예측 웹 서비스** <br>
+[**https://www.myfcseoul.com/**](https://www.myfcseoul.com/)
 
 > 직관 기록을 관리하고, AI를 활용해 다음 경기 결과를 예측하는 FC서울 팬 전용 웹 서비스입니다.
 
