@@ -122,59 +122,59 @@
 ### **로그인 화면**
 <img width="1453" height="736" alt="Image" src="https://github.com/user-attachments/assets/dcafbe68-7ae0-4b1d-bb9e-3315f33944e4" />
 <br>
-카카오 OAuth 2.0을 통해 간편하게 로그인할 수 있는 화면입니다. 
+카카오 OAuth 2.0을 통해 간편하게 로그인할 수 있는 화면입니다.<br>
 
 ---
 ### **메인 화면**
 <img width="2438" height="2222" alt="Image" src="https://github.com/user-attachments/assets/13adbb0f-800f-4c8e-a737-eb79211e59ee" />
 <br>
-경기 일정, 나의 직관 성적, 랭킹을 한눈에 볼 수 있는 대시보드 화면입니다.  
+경기 일정, 나의 직관 성적, 랭킹을 한눈에 볼 수 있는 대시보드 화면입니다.  <br>
 
 ---
 ### **직관 등록 화면**
 <img width="1453" height="1179" alt="Image" src="https://github.com/user-attachments/assets/7a93dc28-2d29-43e9-8a93-55f333676366" />
 <br>
 관람한 경기의 티켓·예매 내역 사진을 업로드하여 직관을 등록할 수 있는 화면입니다.  
-등록된 직관 정보는 출석 통계 및 승률 분석, 랭킹 산정에 활용됩니다.
+등록된 직관 정보는 출석 통계 및 승률 분석, 랭킹 산정에 활용됩니다.<br>
 
 ---
 ### **다이어리 화면**
 <img width="2408" height="2672" alt="Image" src="https://github.com/user-attachments/assets/09e14743-586c-48f8-93d3-ad85ecb36539" />
 <br>
-경기 관람 소감과 일상을 텍스트와 사진으로 기록할 수 있는 개인 다이어리 화면입니다.
+경기 관람 소감과 일상을 텍스트와 사진으로 기록할 수 있는 개인 다이어리 화면입니다.<br>
 
 ---
 ### **AI 경기 예측 화면**
 <img width="5623" height="2964" alt="Image" src="https://github.com/user-attachments/assets/02df5148-01a6-4edf-9d8f-6b515ab33343" />
 <br>
 K리그 순위, 상대 팀 전적, 나의 직관 기록을 기반으로 다음 경기 결과를 예측해 주는 화면입니다.  
-OpenAI API를 활용하여 하루 1회, 텍스트 형태의 상세 예측 리포트를 제공합니다.
+OpenAI API를 활용하여 하루 1회, 텍스트 형태의 상세 예측 리포트를 제공합니다.<br>
 
 ---
 ### **채팅 화면**
 <img width="1469" height="740" alt="Image" src="https://github.com/user-attachments/assets/979db278-a3d0-4ac6-95ec-0ff4c5f1feec" />
 <br>
-다른 사용자와 1:1로 대화하며 직관 후기와 응원 메시지를 나눌 수 있는 채팅 화면입니다.
+다른 사용자와 1:1로 대화하며 직관 후기와 응원 메시지를 나눌 수 있는 채팅 화면입니다.<br>
 
 ---
 ### **프로필 화면**
 <img width="1453" height="736" alt="Image" src="https://github.com/user-attachments/assets/73ea814e-0550-4b09-ba31-67fa13ecf454" />
 <br>
-로그아웃 및 닉네임 변경 가능한 화면 입니다.
+로그아웃 및 닉네임 변경 가능한 화면 입니다.<br>
 
 ---
 ### **관리자 출석 인증 화면**
 <img width="1453" height="736" alt="Image" src="https://github.com/user-attachments/assets/37478a2d-18b3-400f-acbb-af1a3295cc81" />
 <br>
 사용자가 제출한 직관 인증 사진을 관리자 계정이 승인·거절할 수 있는 화면입니다.  
-대기 중인 요청의 경기 정보와 이미지를 확인하고, 버튼 한 번으로 출석 처리 상태를 변경할 수 있습니다.
+대기 중인 요청의 경기 정보와 이미지를 확인하고, 버튼 한 번으로 출석 처리 상태를 변경할 수 있습니다.<br>
 
 
 ---
 ### **모바일 화면**
 <img width="3617" height="5152" alt="Image" src="https://github.com/user-attachments/assets/e32b1c10-59df-4ff8-9e23-6ab6873cb3c4" />
 <br>
-모바일 환경도 고려하여 반응형 레이아웃을 구성하였습니다.
+모바일 환경도 고려하여 반응형 레이아웃을 구성하였습니다.<br>
 
 ---
 <br>
