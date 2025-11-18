@@ -56,7 +56,6 @@
 <summary>프로젝트 구조 펼쳐보기</summary>
 
 ```text
-├── README.md
 ├── myFCseoul
 │   ├── README.md
 │   ├── backend
