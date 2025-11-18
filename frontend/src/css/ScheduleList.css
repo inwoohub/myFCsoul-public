@@ -1,0 +1,596 @@
+/* ScheduleList.css */
+
+.ScheduleList {
+    max-width: 100%;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    color: #111118;
+}
+
+.ScheduleList h3 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* 밑에는 컨테이너임*/
+.scheduleList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap:20px;
+}
+
+@media (max-width: 768px) {
+    /* 현재 달 컨테이너 크기 및 정렬 변경 (필요에 따라 조정) */
+    .scheduleList {
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* 세로 방향(메인 축) 중앙 정렬 */
+        align-items: center; /* 가로 방향(교차 축) 중앙 정렬 */
+    }
+}
+
+
+/* 월별 섹션을 감싸는 컨테이너 */
+.monthContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-top: 3vh;
+    max-height: 90vh;
+    overflow-y: auto;
+    overflow-x: auto;
+    /* Firefox용: 스크롤바 색상, 스크롤바 굵기 설정 */
+    scrollbar-color: #f5f5f5 transparent; /* thumb, track */
+    scrollbar-width: thin;
+    font-size: 0.9rem;
+    color: #EFE7E7;
+    margin-bottom: 20px;
+    border: 1px solid #111118;
+    border-radius: 8px;
+    box-sizing: border-box;
+    padding: 10px 15px;
+    width: 90%;
+}
+
+@media (max-width: 768px) {
+    .monthContainer {
+        display: flex;
+        justify-content: center;
+    }
+}
+
+
+
+/* WebKit (Chrome, Safari)용 스크롤바 스타일 */
+.monthContainer::-webkit-scrollbar {
+    width: 8px; /* 스크롤바 굵기 */
+}
+
+.monthContainer::-webkit-scrollbar-track {
+    background: transparent; /* 트랙 배경색, 필요에 따라 변경 */
+}
+
+.monthContainer::-webkit-scrollbar-thumb {
+    background-color: #f5f5f5; /* 스크롤바 색상, 원하는 색상 코드 사용 */
+    border-radius: 4px;
+}
+
+/* 관리자 일정 등록 버튼 */
+.AdminScheduleRegistration {
+    margin-top: 20px;
+    text-align: center;
+    width: 100%;
+    height: 10vh;
+}
+
+.AdminScheduleRegistration button {
+    border: 1px solid #EFE7E7;
+    background-color: #111118;
+    color: #EFE7E7;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.AdminScheduleRegistration button:hover {
+    background-color: #17172d;
+    border: 1px solid #e4e1e1;
+}
+
+.attendanceModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #111118;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.attendanceModalContent {
+    width: 30vw;
+    background: #111118;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    color: #EFE7E7;
+    border: 1px solid #EFE7E7;
+    position: relative; /* 내부에 절대 위치 요소를 위한 기준 */
+}
+
+@media (max-width: 768px) {
+    /* 현재 달 컨테이너 크기 및 정렬 변경 (필요에 따라 조정) */
+    .attendanceModalContent {
+        width:90vw;
+        margin: 0 auto;
+        max-height: 100%;
+    }
+}
+
+.attendanceOptions {
+    display: flex;
+    gap: 3vw; /* 원하는 간격(px 단위로 조정) */
+    justify-content: center; /* 중앙 정렬 (선택사항) */
+}
+
+@media (max-width: 768px) {
+    /* 현재 달 컨테이너 크기 및 정렬 변경 (필요에 따라 조정) */
+    .attendanceOptions {
+        display: flex;
+        gap: 0vw; /* 원하는 간격(px 단위로 조정) */
+        justify-content: center; /* 중앙 정렬 (선택사항) */
+    }
+}
+
+.attendanceOptions button {
+    margin: 5px;
+    padding: 8px 16px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: #EFE7E7;
+
+}
+
+@media (max-width: 768px) {
+    /* 현재 달 컨테이너 크기 및 정렬 변경 (필요에 따라 조정) */
+    .attendanceOptions button {
+        width:30vw;
+        margin: 0 auto;
+        max-height: 100%;
+    }
+}
+
+
+
+.modal-close{
+    cursor: pointer;
+}
+
+.SchduleListbtn{
+    height: 6vh;
+    border: 1px solid #EFE7E7;
+    background-color: #111118;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.SchduleListbtn:hover{
+    background-color: #111118;
+    border: 1px solid #e4e1e1;
+}
+
+/* 상단 달력 영역 */
+.calendarWrapper {
+    margin-top: 2vh;
+    display: flex;
+    margin-bottom: 2vh;
+    justify-content: center;
+    align-items: stretch; /* 추가된 중요 스타일 */
+}
+
+/* react-calendar 기본 스타일은 라이브러리 CSS를 따르지만,
+   필요에 따라 추가 스타일을 적용할 수 있습니다. */
+.react-calendar {
+    width: 100%;
+    max-width: 80vh;
+    width: 40vw; /* 달력 크기 조정 */
+    background: #111118;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+    color: #EFE7E7;
+}
+
+@media (max-width: 768px) {
+    .react-calendar {
+        max-width: 80vh;
+        width: 90vw; /* 달력 크기 조정 */
+        background: #111118;
+        border-radius: 8px;
+        font-family: Arial, sans-serif;
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+        color: #EFE7E7;
+    }
+}
+
+
+.react-calendar__month-view__weekdays abbr {
+    text-decoration: none;
+}
+
+.react-calendar__navigation {
+    display: flex;
+    height: 5vh;
+    margin-bottom:1vh;
+}
+
+
+
+.custom-day {
+    background-color: #111118;
+    color: #EFE7E7;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+/*!* 달력 셀에 hover 효과 추가 *!*/
+/*.react-calendar__tile:hover {*/
+/*    background-color: #282c34 !important;  !* 원하는 hover 배경색 *!*/
+/*    color: #EFE7E7;             !* 원하는 hover 텍스트 색상 *!*/
+/*    border: 1px solid #007bff !important;*/
+/*    cursor: pointer;         !* 마우스 커서 포인터 모양 *!*/
+/*}*/
+
+.react-calendar__navigation__arrow {
+    display: none;
+}
+
+.react-calendar__navigation__label__labelText {
+    color: #EFE7E7;
+    width: 90%;
+    height: 50%;
+    font-size: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .react-calendar__navigation__label__labelText {
+        font-size: 10px;
+    }
+}
+
+.react-calendar__navigation__label:hover {
+    background-color: #282c34 !important;
+}
+
+.react-calendar__navigation__label:hover .react-calendar__navigation__label__labelText {
+    color: #ffeb3b;
+}
+
+/* 연도/월 뷰(1~12월)에서 모든 타일의 기본 텍스트 색상을 변경 */
+.react-calendar__year-view .react-calendar__tile {
+    color: #EFE7E7 !important;  /* 원하는 텍스트 색상으로 변경 */
+}
+
+.react-calendar__navigation__label {
+    /*background-color: #282c34 !important;*/
+    /* 기본 텍스트 색상 등도 지정 가능 */
+    color: #EFE7E7;
+}
+
+/* 연도/월 뷰에서 타일에 hover 효과 적용 (hover 시 텍스트 색상 변경) */
+.react-calendar__year-view .react-calendar__tile:hover {
+    color: #ffeb3b !important;  /* hover 시의 텍스트 색상 */
+}
+
+.react-calendar__navigation button{
+    margin-top: 1vh;
+}
+
+.game-marker {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 14px; /* 원하는 크기로 조정 */
+}
+
+.react-calendar__tile--active {
+    background-color: #282c34 !important;  /* 원하는 배경색 */
+    color: #EFE7E7 !important;             /* 원하는 텍스트 색상 */
+}
+
+/* 하단 월 네비게이션 ul/li 스타일 */
+.month-nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.schedulesContainer{
+    display: flex;              /* Flex 컨테이너로 지정 */
+    justify-content: center;    /* 가운데 정렬 */
+    gap:1.5vw;                  /* 아이템 사이 간격 */
+}
+
+.calendarWrapperbtn{
+    width: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #EFE7E7;
+    font-size: 18px;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 8px;
+    height: auto; /* 부모 높이 따라 자동 설정 */
+}
+
+.calendarWrapperbtn:hover{
+    color: #F9D645;
+}
+
+.noSchedule {
+    color: #777;
+    font-style: italic;
+}
+
+.scheduleItem {
+    width: 11vw;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #111118;
+    border: 1px solid #f5f5f5;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+@media (max-width: 768px) {
+    .scheduleItem {
+        width: 65vw; /* 화면에 맞춰 너비 조절, 필요에 따라 값을 조정하세요 */
+        margin: 0.5rem auto; /* 좌우 중앙 정렬을 위해 auto 사용 */
+    }
+}
+
+.Navigation_sign:hover{
+    color: gray;
+}
+
+.scheduleItem:hover {
+    background-color: #111118;
+}
+
+.scheduleInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.scheduleDate {
+    font-weight: bold;
+    color: #EFE7E7;
+}
+
+.scheduleTime {
+    color: #EFE7E7;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+
+.scoreUpdateBtn {
+    margin-top: 3vh;
+    width: 100%;
+    height: 5vh;
+    background: #171720;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    color: #EFE7E7;
+}
+
+.scoreUpdateBtn:hover {
+    margin-top: 3vh;
+    width: 100%;
+    background: #111118;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+.scheduleDetail{
+    margin-top: 1vh;
+    background: #171720;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 5vh;
+}
+
+.scheduleDetail:hover{
+    background-color: #111118;
+    font-size: 1.1rem;
+}
+
+/* ===== 날짜 타일 ===== */
+.react-calendar__tile {
+    position: relative;
+    box-sizing: border-box;
+    width: 40px;
+    height: 10vh;
+    padding: 8px;
+    font-size: 10px;
+    font-weight: bold;
+    text-align: left;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    border-radius: 10px;
+    background: #111118;
+    border: 0.5px solid #333333 !important;
+}
+
+
+/*---------------------*/
+
+
+
+/* react-calendar 박스 (MPSchedule이랑 톤 맞춤) */
+.react-calendar {
+    width: 40vw;
+    max-width: 80vh;
+    background: #111118;
+    border-radius: 18px;
+    border: none;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+    color: #ffffff;
+    padding: 8px 10px 12px;
+}
+
+@media (max-width: 768px) {
+    .react-calendar {
+        width: 90vw;
+        max-width: 80vh;
+    }
+}
+
+/* ===== 네비게이션 영역(월/년, 화살표) ===== */
+.react-calendar__navigation {
+    display: flex;
+    height: 40px;
+    margin-bottom: 8px;
+}
+
+.react-calendar__navigation button {
+    background: #111118;
+    border: none;
+    color: #ffffff;
+    font-size: 0.9rem;
+}
+
+/* 월/연도 텍스트 – MPSchedule 달력이랑 같은 느낌 */
+.react-calendar__navigation__label__labelText {
+    color: #d32f2f;          /* 레드 포인트 */
+    width: 90%;
+    height: 50%;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+}
+
+@media (max-width: 768px) {
+    .react-calendar__navigation__label__labelText {
+        font-size: 0.9rem;
+    }
+}
+
+/* 화살표는 안 보이게 (MPSchedule처럼 중앙에 연/월만) */
+.react-calendar__navigation__arrow {
+    display: none;
+}
+
+/* hover 시 라벨 살짝 강조 */
+.react-calendar__navigation__label:hover {
+    background-color: #111118 !important;
+    border-radius: 999px;
+}
+
+.react-calendar__navigation__label:hover .react-calendar__navigation__label__labelText {
+    color: #ffeb3b;
+}
+
+/* ===== 요일 헤더 ===== */
+.react-calendar__month-view__weekdays {
+    text-align: center;
+    text-transform: none;
+    font-size: 0.75rem;
+    color: #9ca3af;
+    background-color: #111118;
+}
+
+.react-calendar__month-view__weekdays abbr {
+    text-decoration: none;
+}
+
+/* 주말 색 살짝 강조 */
+.react-calendar__month-view__weekdays__weekday--weekend {
+    color: #ff4d4f;
+}
+
+/* ===== 날짜 타일 ===== */
+.react-calendar__tile {
+    position: relative;
+    box-sizing: border-box;
+    width: 40px;
+    height: 10vh;
+    padding: 8px;
+    font-size: 10px;
+    font-weight: bold;
+    text-align: left;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    border-radius: 10px;
+    background: #111118;
+    border: 0.5px solid #333333 !important;
+}
+
+/* hover 효과 */
+.react-calendar__tile:enabled:focus {
+    background-color: #111118 !important;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.react-calendar__tile:enabled:hover{
+    background-color: #1e1e1e !important;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+/* 선택된 날짜 */
+.react-calendar__tile--active {
+    background-color: #111118 !important;
+    color: #f5f5f5 !important;
+
+}
+
+/* 연도/월 뷰에서도 글자 흰색 유지 */
+.react-calendar__year-view .react-calendar__tile {
+    color: #ffffff !important;
+    background: #111118;
+}
+
+/* 연도/월 뷰 hover 효과 */
+.react-calendar__year-view .react-calendar__tile:hover {
+    color: #ffeb3b !important;
+}
+
+/* 경기 있는 날 마커(🔥 아이콘) */
+.game-marker {
+    position: absolute;
+    top: 65%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 14px;
+}
+
+/* 오늘 날짜 강조 (MPSchedule 느낌) */
+.react-calendar__tile--now {
+    border: 2px solid #e02424 !important;
+    background: #111118;
+    color: #ffffff !important;
+    border-radius: 8px;
+}

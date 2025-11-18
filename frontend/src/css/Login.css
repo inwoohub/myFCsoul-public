@@ -1,0 +1,98 @@
+/* 로그인 페이지 중앙 정렬 및 크기 조정 */
+* {
+    box-sizing: border-box;
+    font-family: 'Ownglyph_StudyHard-Rg';
+}
+
+
+
+.Login_page{
+    display: flex;
+    align-items: center;
+    width: 80vw; /* 전체 화면의 60% 차지 */
+    max-width: 800px; /* 최대 너비 제한 */
+    height: 500px; /* 세로 크기 증가 */
+    background-color: #111118;
+    padding: 60px;
+}
+
+.Login_container{
+    flex-direction: column;
+    gap:1vh;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin-left: 3vw;
+    margin-bottom: 10vh;
+
+}
+
+.Login_logoimage {
+    width: 150px;
+    aspect-ratio: 1/1;
+    object-fit: cover; /* 선택 사항: 이미지의 내용을 영역에 맞게 크롭 */
+}
+
+@media (max-width: 620px) {
+    .Login_logoimage {
+        width: 100px;
+        aspect-ratio: 1/1;
+        object-fit: cover; /* 선택 사항: 이미지의 내용을 영역에 맞게 크롭 */
+        margin-top: 10vh;
+    }
+}
+
+.Login_input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.kakao_login_medium_narrow {
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10vh;
+    margin-left: 15vw;
+}
+
+.Login_link {
+    text-align: center;
+}
+
+.Login_text{
+    font-size: 1.5rem;
+    font-weight: bold;
+    color:#A81D1C;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+@media (max-width: 620px) {
+    .Login_text {
+        font-size: 1rem; /* 폰트 크기도 줄임 */
+        justify-content: center;
+        align-items: center;
+        display: flex;
+    }
+}
+
+/* 모바일/좁은 화면에서 세로 배치 */
+@media (max-width: 762px) {
+    .Login_page {
+        flex-direction: column;
+    }
+    /* 이미지 & 타이틀 박스 아래로 공간 좀 띄우기 */
+    .Login_container {
+        margin-bottom: 2rem;
+    }
+
+    .kakao_login_medium_narrow {
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 10vh;
+        margin-left: 0vw;
+    }
+
+}

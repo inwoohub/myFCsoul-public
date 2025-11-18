@@ -1,0 +1,134 @@
+/* DiaryModal.css */
+
+.diary-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.diary-modal {
+    width: 30vw;
+    background: #111118;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    color: #EFE7E7;
+    border: 1px solid #EFE7E7;
+    position: relative; /* 내부에 절대 위치 요소를 위한 기준 */
+}
+
+@media (max-width: 768px) {
+    .diary-modal{
+        width: 90vw;
+    }
+}
+
+.diary-modal h2 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.diary-modal-form input[type="text"],
+.diary-modal-form input[type="date"],
+.diary-modal-form textarea,
+.diary-modal-form input[type="file"] {
+    width: 100%;
+    margin-bottom: 0.75rem;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.diary-modal-form textarea {
+    resize: vertical;
+}
+
+.diary-modal-preview {
+    max-width: 100%;
+    height: auto;
+    max-height: 80px; /* 또는 원하는 고정 높이 */
+    border-radius: 10px;
+    object-fit: contain; /* 비율 유지하면서 잘리지 않게 */
+    display: block;
+    margin: 10px auto;
+}
+
+.diary-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.diary-modal-actions button {
+    padding: 0.5rem 1rem;
+    font-size: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    height: 5vh;
+    width: 50px;
+    margin-top: 30px;
+}
+
+.diary-modal-actions button[type="button"] {
+    background: #f0f0f0;
+    color: #333;
+    cursor: pointer;
+}
+
+.diary-modal-actions button:hover{
+    background: #d6d6d6;
+}
+
+.diary-modal-actions button[type="submit"] {
+    background: #2563eb;
+    color: #fff;
+    cursor: pointer;
+}
+
+.diary-modal-actions button[type="submit"]:hover{
+    background: #007bff;
+}
+
+.diary-modal-img{
+    width: 100px;
+}
+
+@media (max-width: 768px) {
+
+    .diary-modal-img{
+        width: 200px;
+        margin-top: 10px;
+    }
+
+}
+
+.diary-modal-close{
+    float: right;
+    z-index: 2;
+}
+
+.diary-modal-title{
+    font-size: 15px;
+    margin-bottom: 5vh;
+    font-weight: bold;
+}
+
+.diary-modal-content{
+    font-size: 14px;
+}
+
+.diary-modal-time{
+    font-size: 13px;
+    margin-top: 20px;
+}

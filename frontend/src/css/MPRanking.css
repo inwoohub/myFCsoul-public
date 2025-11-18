@@ -1,0 +1,118 @@
+/* 전체 랭킹 카드 박스 */
+.MPRankingPage {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    /*width: 28vw;*/
+    background-color: #111118;         /* 흰 카드 */
+    border: 1px solid #e5e5e5;          /* 연한 회색 테두리 */
+    color: #222222;                     /* 진한 글자색 */
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* 폭 좁아질 때: 구조는 그대로, 가운데 정렬 */
+@media (max-width: 1100px) {
+    .MPRankingPage {
+        flex-direction: column;
+        width: 40vw;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .MPRankingPage {
+        flex-direction: column;
+        width: 90vw;
+        margin: 0 auto;
+    }
+}
+
+/* 각 섹션 (직관왕 / 승리요정) */
+.rankingSection {
+    flex: 1;
+    border-radius: 8px;
+}
+
+/* 섹션 제목 */
+.Ranking_span {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 16px;
+    font-weight: bold;
+    color: #d32f2f;                     /* 레드 포인트 */
+}
+
+/* 리스트 공통 */
+.rankingList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* 각 랭킹 아이템 */
+.rankingList li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.45rem 0.6rem;
+    font-size: 14px;
+    margin-bottom: 0.6rem;
+    border-radius: 10px;
+    background-color: #fafafa;          /* 기본은 밝은 회색 배경 */
+    border: 1px solid #eeeeee;
+}
+
+.rankingList li:last-child {
+    margin-bottom: 0;
+}
+
+/* 랭킹 숫자 */
+.rank {
+    font-weight: bold;
+    text-align: center;
+    min-width: 2.5rem;
+}
+
+/* 닉네임 */
+.name {
+    flex: 1;
+    padding: 0 0.5rem;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 수치(횟수/%) */
+.count {
+    min-width: 2.8rem;
+    display: flex;
+    justify-content: center;
+    font-weight: 600;
+}
+
+/* 순위별 강조 색 – 화이트 테마용 파스텔 느낌 */
+.rank-item.top1 {
+    background: #fff7d1;                /* 밝은 골드 */
+    border-color: #f4d03f;
+}
+.rank-item.top2 {
+    background: #f4f4f4;                /* 실버 느낌 */
+    border-color: #d4d4d4;
+}
+.rank-item.top3 {
+    background: #ffe5c4;                /* 브론즈 */
+    border-color: #e0a96d;
+}
+.rank-item.top4 {
+    background: #f8f8f8;
+    border-color: #e5e5e5;
+}
+.rank-item.top5 {
+    background: #f8f8f8;
+    border-color: #e5e5e5;
+}

@@ -1,0 +1,110 @@
+/* AttendanceModal.css */
+
+.attendance-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.attendance-modal-content {
+    background: #111118;
+    border-radius: 8px;
+    padding: 24px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    position: relative;
+}
+
+.attendance-modal-content h4 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 1.25rem;
+}
+
+.attendance-modal-content p {
+    margin-bottom: 16px;
+    color: #555;
+}
+
+.attendance-modal-content input[type="file"] {
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+.attendance-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.attendance-modal-actions button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+.attendance-modal-actions button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.attendance-modal-actions button:first-child {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.attendance-modal-actions button:last-child {
+    background-color: #ccc;
+    color: #333;
+}
+
+.modal-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: transparent;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.modal-close:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.attendance-modal-title{
+    font-size: 20px;
+    font-weight: bold;
+    color: #EFE7E7;
+}
+
+.attendance-modal-content2{
+    font-size: 15px;
+    font-weight: bold;
+    color: #EFE7E7;
+}
+
+/* 기본: 한 줄로 이어 붙이기 */
+.attendance-modal-content2 {
+    display: inline-block;
+    margin-right: 0.25em; /* 필요하면 간격 조정 */
+}
+
+/* 화면이 752px 이하일 때, 각 span을 블록으로 바꿔서 줄바꿈 */
+@media (max-width: 752px) {
+    .attendance-modal-content2 {
+        display: block;
+        margin-right: 0;
+    }
+}

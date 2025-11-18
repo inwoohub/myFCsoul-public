@@ -1,0 +1,134 @@
+/* ScheduleRegistration_page 전체 컨테이너는 그대로 둡니다 */
+.ScheduleRegistration_page {
+    display: flex;
+    flex-direction: column;  /* 전체 모달 콘텐츠는 세로로 쌓이도록 */
+    align-items: center;
+    width: 100vw;
+    max-width: 800px;
+    height: 500px;
+    background-color: #212121;
+    padding: 60px;
+}
+
+/* h2 제목은 중앙 정렬 */
+.ScheduleRegistration_page h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* form 내부를 가로 배열로 변경 */
+.ScheduleRegistration_page form {
+    display: flex;
+    flex-direction: row;     /* 가로 배열 */
+    flex-wrap: wrap;         /* 화면 너비에 따라 여러 줄로 감싸기 가능 */
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* 각 입력 필드 영역에 대해 가로 정렬 및 여백 처리 */
+.formField {
+    flex: 1 1 30%;           /* 각 필드가 가로 공간의 30% 정도 차지 */
+    margin-right: 20px;
+    margin-bottom: 15px;      /* 필요에 따라 조정 */
+    color: #EFE7E7;
+}
+
+/* 레이블은 그대로 block 처리 */
+.formField label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* 입력 필드 스타일 (이미 정의된대로) */
+.formField input,
+.formField select {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+/* 제출 버튼 */
+button[type="submit"] {
+    width: auto;
+    padding: 10px 20px;
+    background-color: #A81D1C;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #901212;
+}
+
+.ScheduleRegistration{
+    color:#EFE7E7;
+    height: 300px;        /* 고정 높이 (필요에 따라 값을 조정) */
+    overflow-y: auto;     /* 수직 스크롤을 활성화 */
+    width: 100%;
+    height: 30vh;
+}
+
+/* 삭제 버튼 스타일 */
+.deleteButton {
+    margin-left: 10px;
+    background-color: #ff4d4f;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.deleteButton:hover {
+    background-color: #ff7875;
+}
+
+/* 웹킷 기반 브라우저용 스크롤바 스타일 */
+.ScheduleRegistration::-webkit-scrollbar {
+    width: 8px;  /* 스크롤바 너비 */
+}
+
+/* 스크롤바 트랙(배경) */
+.ScheduleRegistration::-webkit-scrollbar-track {
+    background-color: #e0e0e0;  /* 트랙 배경색 */
+    border-radius: 4px;
+}
+
+/* 스크롤바 thumb(실제 이동 막대) */
+.ScheduleRegistration::-webkit-scrollbar-thumb {
+    background-color: #A81D1C;  /* 스크롤 thumb 색상 */
+    border-radius: 4px;
+}
+
+/* 스크롤 thumb hover 효과 */
+.ScheduleRegistration::-webkit-scrollbar-thumb:hover {
+    background-color: #901212;
+}
+
+.ScheduleRegistration ul li {
+    margin-bottom: 10px;  /* 각 항목 사이에 10px의 간격을 추가 */
+    padding: 0.01vh;         /* 항목 내부 여백 추가 (선택 사항) */
+    list-style: none;     /* 기본 목록 스타일 제거 (원하는 경우) */
+}
+
+@media (max-width: 768px) {
+    .ScheduleRegistration_page{
+        width:80vw;
+    }
+    .formField{
+        font-size: 8px;
+    }
+
+    .ScheduleRegistration{
+        width: 80vw;
+        font-size: 10px;
+    }
+}

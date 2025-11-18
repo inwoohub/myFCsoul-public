@@ -1,0 +1,82 @@
+.ScoreUpdate_modal_content {
+    background: #fff;
+    padding: 20px;
+    width: 400px;
+    border-radius: 5px;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.ScoreUpdate_close_btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    color: #888;
+}
+
+.ScoreUpdate_close_btn:hover {
+    color: #000;
+}
+
+.ScoreUpdate_match_info {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.ScoreUpdate_input_group {
+    margin: 15px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.ScoreUpdate_input_group label {
+    margin-bottom: 5px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.ScoreUpdate_input_group input,
+.ScoreUpdate_input_group select {
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.ScoreUpdate_submit_btn {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    margin-top: 15px;
+}
+
+.ScoreUpdate_submit_btn:hover {
+    background-color: #0069d9;
+}
+
+.ScoreUpdate_delete_btn{
+    background-color: #9E1819;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    margin-top: 15px;
+}
+
+.ScoreUpdate_delete_btn:hover {
+    background-color: #851414;
+}

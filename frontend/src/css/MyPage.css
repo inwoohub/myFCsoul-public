@@ -1,0 +1,65 @@
+/* src/css/ProfileModal.css */
+.profile-modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 9999;          /* 굉장히 높은 값으로 설정 */
+}
+.profile-modal-content {
+    background: #111118;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 360px; max-width: 90%;
+    z-index: 10000;         /* overlay보다 한 단계 높게 */
+    position: relative;
+    color: #EFE7E7
+}
+.profile-modal-content h2 {
+    margin-top: 0;
+}
+.profile-modal-content label {
+    display: block;
+    margin: 1rem 0 0.5rem;
+}
+.profile-modal-content input {
+    width: 100%;
+    padding: 0.5rem;
+    box-sizing: border-box;
+}
+.profile-modal-actions {
+    margin-top: 1.5rem;
+    display: flex; justify-content: center; gap: 0.5rem;
+}
+.profile-modal-actions button {
+    padding: 0.5rem 1rem;
+    background-color: #EFE7E7;
+    cursor: pointer;
+}
+
+.profile-modal-actions button:hover{
+    background-color: #cdcaca;
+}
+
+.error-text{
+    display: flex;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.logout-section {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.logout-button {
+    background: transparent;
+    border: none;
+    color: #e53e3e;
+    cursor: pointer;
+}
+
+.logout-button:hover{
+    color: #bc3535;
+}

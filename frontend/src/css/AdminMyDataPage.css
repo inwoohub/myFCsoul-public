@@ -1,0 +1,252 @@
+/* src/css/AdminMyDataPage.css */
+
+/* 전체 페이지 레이아웃 */
+.admin-pending-container {
+    background-color: #111118;
+    height: 100%;
+}
+
+.admin-pending-titlebox{
+    text-align: center;
+    align-content: center;
+    width: 100%;
+    height: 8vh;
+    border-bottom: 1px solid #9E1819;
+}
+
+.admin-pending-title{
+    color: #EFE7E7;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 2vh;
+}
+
+.admin-pending-container h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 0.5rem;
+}
+
+/* 리스트 스타일 제거 및 항목 간 간격 조정 */
+.admin-pending-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.admin-pending-item {
+    justify-items: center;
+    align-items: center;
+    border-bottom: 1px solid #9E1819;
+}
+
+.admin-pending-item:last-child {
+    border-bottom: none;
+}
+
+/* 사진 썸네일 */
+.admin-pending-item img {
+    width: 700px;
+    height: 500px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-right: 1rem;
+    background: #f0f0f0;
+}
+
+@media (max-width: 768px) {
+    .admin-pending-item img{
+        width: 200px;
+        height: 180px;
+    }
+
+}
+
+/* 일정·사용자 정보 */
+.admin-pending-info {
+    flex-grow: 1;
+    font-size: 18px;
+    color: #ddd;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* 버튼 그룹 */
+.admin-pending-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* 승인/거절 버튼 스타일 */
+.admin-pending-actions button {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.875rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-bottom: 20px;
+}
+
+.admin-pending-actions button:hover {
+    opacity: 0.9;
+}
+
+.admin-pending-actions button:first-of-type {
+    background-color: #4caf50;
+    color: white;
+}
+
+.admin-pending-actions button:last-of-type {
+    background-color: #f44336;
+    color: white;
+}
+
+/* AdminMyDataPage.css */
+
+/* 오버레이: 화면 전체, 반투명 검정 */
+.Admin-image-preview-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+/* 모달 컨텐츠 */
+.Admin-image-preview-content {
+    position: relative;
+}
+
+.Admin-image-preview-content img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 4px;
+}
+
+/* 닫기 버튼 */
+.Admin-modal-close {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: white;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+}
+
+.Admin-page-footer{
+    background-color: #111118;
+    height: 100vh;
+}
+
+.admin-pending-image{
+    margin-top: 2vh;
+}
+
+
+/*-----하단부터 관리자용 유저 조회------------------------------------------------------------*/
+
+.AdminUserModal__overlay {
+    position: fixed;   /* 화면 전체 덮기 */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background: #111118;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+.AdminUserModal__content{
+    width: min(1100px, 92vw); max-height: 80vh; overflow: hidden; background: #fff;
+    border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.2); display: flex; flex-direction: column;
+}
+.AdminUserModal__header{
+    display:flex; align-items:center; justify-content: space-between;
+    padding: 14px 18px; border-bottom: 1px solid #eee;
+}
+.AdminUserModal__close{ font-size: 22px; background: transparent; border: 0; cursor: pointer; }
+.AdminUserModal__toolbar{
+    display:flex; align-items:center; justify-content: space-between; gap: 16px;
+    padding: 12px 18px; border-bottom: 1px solid #f3f3f3;
+}
+.AdminUserModal__search input{ padding: 6px 10px; border:1px solid #ddd; border-radius: 8px; margin-right: 8px; }
+.AdminUserModal__tableWrap{ overflow:auto; }
+.AdminUserModal__table{ width: 100%; border-collapse: collapse; font-size: 14px; }
+.AdminUserModal__table th, .AdminUserModal__table td{ border-bottom:1px solid #f1f1f1; padding: 10px 12px; text-align: left; }
+.AdminUserModal__table th{ background: #fafafa; }
+.AdminUserModal__pager{ display:flex; gap: 12px; align-items:center; justify-content: center; padding: 12px; border-top: 1px solid #f3f3f3; }
+.AdminUserModal__pager button[disabled]{ opacity:.4; cursor: not-allowed; }
+
+/* 공통 */
+.AdminUserModal__overlay{
+    position: fixed; inset: 0; background: rgba(0,0,0,.5);
+    display: flex; align-items: center; justify-content: center; z-index: 9999;
+}
+.AdminUserModal__content{
+    width: min(1100px, 92vw); max-height: 80vh; overflow: hidden; background: #fff;
+    border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.2); display: flex; flex-direction: column;
+}
+.AdminUserModal__header{
+    display:flex; align-items:center; justify-content: space-between;
+    padding: 14px 18px; border-bottom: 1px solid #eee;
+}
+.AdminUserModal__close{ font-size: 22px; background: transparent; border: 0; cursor: pointer; }
+.AdminUserModal__toolbar{
+    display:flex; align-items:center; justify-content: space-between; gap: 12px;
+    padding: 10px 16px; border-bottom: 1px solid #f3f3f3; flex-wrap: wrap;
+}
+.AdminUserModal__search input{ padding: 8px 10px; border:1px solid #ddd; border-radius: 8px; margin-right: 8px; min-width: 220px; }
+.AdminUserModal__tableWrap{ overflow:auto; }
+.AdminUserModal__table{ width: 100%; border-collapse: collapse; font-size: 14px; }
+.AdminUserModal__table th, .AdminUserModal__table td{ border-bottom:1px solid #f1f1f1; padding: 10px 12px; text-align: left; }
+.AdminUserModal__table th{ background: #fafafa; }
+.AdminUserModal__pager{ display:flex; gap: 12px; align-items:center; justify-content: center; padding: 12px; border-top: 1px solid #f3f3f3; }
+.AdminUserModal__pager button[disabled]{ opacity:.4; cursor: not-allowed; }
+.tap{ padding: 10px 14px; border-radius: 10px; border: 1px solid #ddd; background:#f8f8f8; cursor:pointer; }
+.tap:active{ transform: translateY(1px); }
+
+/* 모바일 카드 레이아웃 (기본 숨김) */
+.AdminUserModal__cards{ display:none; padding: 8px 12px; overflow: auto; }
+.AdminUserModal__card{
+    border:1px solid #eee; border-radius: 12px; padding: 12px; margin: 8px 0; background:#fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,.04);
+}
+.AdminUserModal__cardTop{ display:flex; align-items:center; justify-content: space-between; margin-bottom: 6px; }
+.AdminUserModal__badge{ font-weight: 700; font-size: 13px; padding: 2px 8px; border-radius: 999px; background:#f1f5f9; }
+.AdminUserModal__role{ font-size: 12px; padding: 2px 8px; border-radius: 999px; background:#eef2ff; }
+.AdminUserModal__row{ display:flex; justify-content: space-between; gap:12px; padding: 6px 0; border-bottom: 1px dashed #f1f1f1; }
+.AdminUserModal__row:last-child{ border-bottom: 0; }
+.AdminUserModal__row .label{ color:#6b7280; font-size: 12px; min-width: 70px; }
+.AdminUserModal__row .value{ font-weight: 600; font-size: 13px; text-align: right; }
+.AdminUserModal__row .value.mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+.AdminUserModal__empty{ text-align:center; color:#888; padding: 20px 0; }
+
+/* 모바일: 풀스크린 + 카드 보기 활성화, 테이블 숨김 */
+@media (max-width: 640px){
+    .AdminUserModal__content{
+        width: 90vw; height: 80vh; max-height: 80vh; border-radius: 0;
+        display:flex; flex-direction: column;
+    }
+    .AdminUserModal__header{ padding: 14px 16px; position: sticky; top:0; background:#fff; z-index: 2; }
+    .AdminUserModal__toolbar{ position: sticky; top: 56px; background:#fff; z-index: 2; padding: 8px 12px; }
+    .AdminUserModal__tableWrap{ display:none; }
+    .AdminUserModal__cards{ display:block; flex:1; }
+    .AdminUserModal__pager{ position: sticky; bottom: 0; background:#fff; z-index: 2; }
+    .AdminUserModal__search input{ min-width: 0; width: 58vw; }
+    .AdminUserModal__close{ font-size: 26px; padding: 8px; }
+}

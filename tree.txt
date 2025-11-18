@@ -1,0 +1,251 @@
+.
+├── README.md
+├── myFCseoul
+│   ├── README.md
+│   ├── backend
+│   │   ├── Dockerfile
+│   │   ├── build.gradle
+│   │   ├── gradle
+│   │   │   └── wrapper
+│   │   │       ├── gradle-wrapper.jar
+│   │   │       └── gradle-wrapper.properties
+│   │   ├── gradle.properties
+│   │   ├── gradlew
+│   │   ├── gradlew.bat
+│   │   ├── settings.gradle
+│   │   └── src
+│   │       ├── main
+│   │       │   ├── java
+│   │       │   │   └── com
+│   │       │   │       └── myfcseoul
+│   │       │   │           └── backend
+│   │       │   │               ├── BackendApplication.java
+│   │       │   │               ├── config
+│   │       │   │               │   ├── AwsConfig.java
+│   │       │   │               │   ├── SecurityConfig.java
+│   │       │   │               │   ├── WebConfig.java
+│   │       │   │               │   └── WebSocketConfig.java
+│   │       │   │               ├── controller
+│   │       │   │               │   ├── AdminMyDataController.java
+│   │       │   │               │   ├── AdminUserController.java
+│   │       │   │               │   ├── ChatController.java
+│   │       │   │               │   ├── ChatRoomController.java
+│   │       │   │               │   ├── FriendController.java
+│   │       │   │               │   ├── GalleryController.java
+│   │       │   │               │   ├── HomeController.java
+│   │       │   │               │   ├── MyDataController.java
+│   │       │   │               │   ├── PredictionController.java
+│   │       │   │               │   ├── ProfileController.java
+│   │       │   │               │   ├── RankingController.java
+│   │       │   │               │   ├── S3Controller.java
+│   │       │   │               │   ├── ScheduleController.java
+│   │       │   │               │   ├── ScheduleResultController.java
+│   │       │   │               │   ├── TestController.java
+│   │       │   │               │   └── UserController.java
+│   │       │   │               ├── dto
+│   │       │   │               │   ├── AttendanceRankDTO.java
+│   │       │   │               │   ├── ChatMessageDTO.java
+│   │       │   │               │   ├── CheerRankDTO.java
+│   │       │   │               │   ├── CreateGalleryRequestDTO.java
+│   │       │   │               │   ├── FriendDto.java
+│   │       │   │               │   ├── ProfileUpdateRequest.java
+│   │       │   │               │   ├── RankingResponse.java
+│   │       │   │               │   ├── UserSummaryDTO.java
+│   │       │   │               │   └── WinRateRankDTO.java
+│   │       │   │               ├── model
+│   │       │   │               │   ├── ChatMessage.java
+│   │       │   │               │   ├── ChatRoom.java
+│   │       │   │               │   ├── CheerMessage.java
+│   │       │   │               │   ├── Friend.java
+│   │       │   │               │   ├── FriendId.java
+│   │       │   │               │   ├── Gallery.java
+│   │       │   │               │   ├── MyData.java
+│   │       │   │               │   ├── Schedule.java
+│   │       │   │               │   └── User.java
+│   │       │   │               ├── repository
+│   │       │   │               │   ├── ChatMessageRepository.java
+│   │       │   │               │   ├── ChatRoomRepository.java
+│   │       │   │               │   ├── FriendRepository.java
+│   │       │   │               │   ├── GalleryRepository.java
+│   │       │   │               │   ├── MyDataRepository.java
+│   │       │   │               │   ├── ScheduleRepository.java
+│   │       │   │               │   └── UserRepository.java
+│   │       │   │               └── service
+│   │       │   │                   ├── ChatService.java
+│   │       │   │                   ├── CustomOAuth2AuthenticationSuccessHandler.java
+│   │       │   │                   ├── CustomOAuth2UserService.java
+│   │       │   │                   ├── FriendService.java
+│   │       │   │                   ├── KLeagueScraperService.java
+│   │       │   │                   ├── MyDataService.java
+│   │       │   │                   ├── OpenAiClientService.java
+│   │       │   │                   ├── PromptBuilder.java
+│   │       │   │                   ├── RankingService.java
+│   │       │   │                   ├── S3Service.java
+│   │       │   │                   ├── ScheduleService.java
+│   │       │   │                   └── UserService.java
+│   │       │   └── resources
+│   │       │       ├── application.properties
+│   │       │       └── templates
+│   │       │           └── home.html
+│   │       └── test
+│   │           └── java
+│   │               └── com
+│   │                   └── myfcseoul
+│   │                       └── backend
+│   │                           └── config
+│   │                               ├── WebConfig.java
+│   │                               └── controller
+│   │                                   └── TestController.java
+│   ├── certbot
+│   │   ├── conf
+│   │   │   └── renewal
+│   │   │       └── myfcseoul.com.conf
+│   │   ├── log
+│   │   │   ├── letsencrypt.log
+│   │   │   ├── letsencrypt.log.1
+│   │   │   └── letsencrypt.log.2
+│   │   └── www
+│   ├── docker-compose.yml
+│   ├── frontend
+│   │   ├── Dockerfile
+│   │   ├── README.md
+│   │   ├── build
+│   │   │   ├── Seoul_ai.png
+│   │   │   ├── asset-manifest.json
+│   │   │   ├── favicon.ico
+│   │   │   ├── index.html
+│   │   │   ├── kakao_login_medium_narrow.png
+│   │   │   ├── kakaotalk3.png
+│   │   │   ├── logo192.png
+│   │   │   ├── logo512.png
+│   │   │   ├── mainimage.jpg
+│   │   │   ├── mainpage1.jpg
+│   │   │   ├── mainpage2.jpg
+│   │   │   ├── mainpage3.jpg
+│   │   │   ├── mainpage4.jpg
+│   │   │   ├── manifest.json
+│   │   │   ├── robots.txt
+│   │   │   ├── seoul_logo.png
+│   │   │   └── static
+│   │   │       ├── css
+│   │   │       │   ├── main.ee8f974a.css
+│   │   │       │   └── main.ee8f974a.css.map
+│   │   │       └── js
+│   │   │           ├── 453.d855a71b.chunk.js
+│   │   │           ├── 453.d855a71b.chunk.js.map
+│   │   │           ├── main.14df7ffe.js
+│   │   │           ├── main.14df7ffe.js.LICENSE.txt
+│   │   │           └── main.14df7ffe.js.map
+│   │   ├── config
+│   │   │   ├── env.js
+│   │   │   ├── getHttpsConfig.js
+│   │   │   ├── jest
+│   │   │   │   ├── babelTransform.js
+│   │   │   │   ├── cssTransform.js
+│   │   │   │   └── fileTransform.js
+│   │   │   ├── modules.js
+│   │   │   ├── paths.js
+│   │   │   ├── webpack
+│   │   │   │   └── persistentCache
+│   │   │   │       └── createEnvironmentHash.js
+│   │   │   ├── webpack.config.js
+│   │   │   └── webpackDevServer.config.js
+│   │   ├── craco.config.js
+│   │   ├── default.conf
+│   │   ├── git
+│   │   ├── package-lock.json
+│   │   ├── package.json
+│   │   ├── public
+│   │   │   ├── Seoul_ai.png
+│   │   │   ├── favicon.ico
+│   │   │   ├── index.html
+│   │   │   ├── kakao_login_medium_narrow.png
+│   │   │   ├── kakaotalk3.png
+│   │   │   ├── logo192.png
+│   │   │   ├── logo512.png
+│   │   │   ├── mainimage.jpg
+│   │   │   ├── mainpage1.jpg
+│   │   │   ├── mainpage2.jpg
+│   │   │   ├── mainpage3.jpg
+│   │   │   ├── mainpage4.jpg
+│   │   │   ├── manifest.json
+│   │   │   ├── robots.txt
+│   │   │   └── seoul_logo.png
+│   │   ├── scripts
+│   │   │   ├── build.js
+│   │   │   ├── start.js
+│   │   │   └── test.js
+│   │   └── src
+│   │       ├── App.css
+│   │       ├── App.js
+│   │       ├── App.test.js
+│   │       ├── components
+│   │       │   ├── AdminUserModal.js
+│   │       │   ├── AttendanceDoughnutChart.js
+│   │       │   ├── AttendanceModal.js
+│   │       │   ├── DiaryModal.js
+│   │       │   ├── GameDetailModal.js
+│   │       │   ├── InitialNicknameModal.js
+│   │       │   ├── LoginModal.js
+│   │       │   ├── MPRanking.js
+│   │       │   ├── MPSchedule.js
+│   │       │   ├── MPStatistics.js
+│   │       │   ├── MyPage.js
+│   │       │   ├── NavigationBar.js
+│   │       │   ├── ProfileModal.js
+│   │       │   ├── ScheduleList.js
+│   │       │   ├── ScheduleRegistration.js
+│   │       │   ├── ScheduleRegistrationModal.js
+│   │       │   ├── ScheduleWinRateChart.js
+│   │       │   ├── ScoreUpdate.js
+│   │       │   ├── ScoreUpdateModal.js
+│   │       │   └── messenger
+│   │       │       ├── ChatList.js
+│   │       │       ├── ChatWindow.js
+│   │       │       └── MessengerModal.js
+│   │       ├── css
+│   │       │   ├── AdminMyDataPage.css
+│   │       │   ├── AttendanceDoughnutChart.css
+│   │       │   ├── AttendanceModal.css
+│   │       │   ├── ChatWindow.css
+│   │       │   ├── DiaryModal.css
+│   │       │   ├── DiaryPage.css
+│   │       │   ├── GameDetailModal.css
+│   │       │   ├── InitialNicknameModal.css
+│   │       │   ├── Login.css
+│   │       │   ├── LoginModal.css
+│   │       │   ├── MPRanking.css
+│   │       │   ├── MPSchedule.css
+│   │       │   ├── MPStatistics.css
+│   │       │   ├── MainPage.css
+│   │       │   ├── Messenger.css
+│   │       │   ├── MyPage.css
+│   │       │   ├── NavigationBar.css
+│   │       │   ├── ProfileModal.css
+│   │       │   ├── ScheduleList.css
+│   │       │   ├── SchedulePage.css
+│   │       │   ├── ScheduleRegistration.css
+│   │       │   ├── ScheduleRegistrationModal.css
+│   │       │   ├── ScheduleWinRateChart.css
+│   │       │   ├── ScoreUpdate.css
+│   │       │   ├── ScoreUpdateModal.css
+│   │       │   └── StatisticsPage.css
+│   │       ├── hooks
+│   │       │   └── usePrivateChat.js
+│   │       ├── index.css
+│   │       ├── index.js
+│   │       ├── logo.svg
+│   │       ├── pages
+│   │       │   ├── AdminMyDataPage.js
+│   │       │   ├── DiaryPage.js
+│   │       │   ├── Login.js
+│   │       │   ├── MainPage.js
+│   │       │   ├── SchedulePage.js
+│   │       │   ├── StatisticsPage.js
+│   │       │   └── test.html
+│   │       └── reportWebVitals.js
+│   └── nginx
+│       └── default.conf
+└── tree.txt
+
+49 directories, 200 files

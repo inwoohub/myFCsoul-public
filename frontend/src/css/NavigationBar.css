@@ -1,0 +1,198 @@
+.NavigationBar {
+    display: flex;
+    align-items: center;
+    padding: 5px 20px;
+    background-color: #111118;
+    height: 8vh;
+    position: relative;  /* 추가된 부분 */
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.Navigation_logoimage {
+    width: 40px;
+    height: 40px;
+    margin-right: 1vw;
+}
+
+/* 화면 폭 768px 이하일 때 로고 이미지 크기 변경 */
+@media (max-width: 930px) {
+    .Navigation_logoimage {
+        width: clamp(30px, 5vw, 40px);
+        height: clamp(30px, 5vw, 40px);
+        margin-right: 1vw;
+    }
+}
+
+.Navigation_title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #EFE7E7;
+    cursor: pointer;
+}
+
+.Navigation_title:hover{
+    color: gray;
+}
+
+/* 상단 메뉴 스타일 */
+.Navigation_nav ul {
+    font-size: 0.9rem;
+    font-weight: bold;
+    display: flex;
+    gap: 10vh;
+    list-style: none;
+    margin-left: 2vw;
+    color: #EFE7E7;
+    cursor: pointer;
+}
+
+.Navigation_nav li:hover{
+    color: gray;
+}
+
+.Navigation_frined:hover{
+    color: gray;
+}
+
+.Navigation_sign {
+    font-size: clamp(0.9rem, 1.5vw, 1rem);
+    font-weight: bold;
+    margin-right: 2vw;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+.Navigation_frined {
+    font-size: clamp(0.9rem, 1.5vw, 1rem);
+    font-weight: bold;
+    margin-left: auto;
+    margin-right: 2vw;
+    cursor: pointer;
+}
+
+/* 데스크탑 기본 스타일 */
+.Navigation_frined,
+.Navigation_nav,
+.Navigation_sign {
+    display: block;
+    color: #EFE7E7;
+    cursor: pointer;
+}
+
+/* 햄버거 버튼은 기본적으로 숨김 */
+.Hamburger {
+    display: none;
+    background-color: #111118;
+    color: #EFE7E7;
+    border: 2px solid #EFE7E7;
+    cursor: pointer;
+}
+
+.Hamburger:hover{
+    background-color: #EFE7E7;
+    color : #111118;
+
+}
+
+/* 미디어 쿼리: 화면 폭 768px 이하에서 */
+@media (max-width: 930px) {
+    .Navigation_nav,
+    .Navigation_frined,
+    .Navigation_sign {
+        display: none; /* 데스크탑 메뉴와 로그인 텍스트 숨김 */
+    }
+    .Hamburger {
+        display: block;
+        position: absolute;
+        left: 20px;  /* 좌측으로 배치 */
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    /* 헤더 자체의 정렬 변경: 로고와 타이틀을 가운데 정렬 */
+    .NavigationBar {
+        justify-content: center;
+    }
+    /* 로고와 타이틀 래퍼(그룹)를 가운데 정렬 */
+    .LogoTitle {
+        margin: 0 auto;
+    }
+}
+
+/* 모바일용 메뉴 (토글 시 표시) */
+.Mobile_nav {
+    position: fixed;
+    top: 6vh;
+    left: 0;
+    width: 50vw;
+    background-color: #111118;
+    height: 100vh;
+    z-index: 1000;
+}
+
+
+
+.Mobile_nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 10px;
+}
+
+.Mobile_nav li {
+    justify-content: center;
+    padding: 10px;
+    border-bottom: 1px solid #EFE7E7;
+    color: #EFE7E7;
+    cursor: pointer;
+}
+
+.Mobile_nav li:hover{
+    color:gray;
+}
+
+/* 로고와 타이틀 그룹 */
+.LogoTitle {
+    display: flex;
+    align-items: center;
+    gap: 1vw;
+}
+
+.Mobile_nav_header{
+    color:#EFE7E7;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-left: 1vw;
+    margin-top: 1vh;
+    font-weight: bold;
+}
+
+.Mobile_nav_header:hover{
+    color:gray;
+}
+
+/* NavigationBar.css 에 추가 */
+.Mobile_nav_overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    /* 필요하면 반투명 배경도 줄 수 있어요:
+       background: rgba(0,0,0,0.3);
+    */
+    z-index: 100;  /* 메뉴 z-index 보다 낮게 */
+}
+.Mobile_nav {
+    position: absolute;
+    right: 0; top: 0;
+    width: 200px;
+}
+
+.Navigation_frined + .Navigation_sign {
+    margin-left: 0;       /* 마이페이지는 auto 해제 */
+}
+
+.NavigationBarLinks{
+    color: #f5f5f5;
+}
+
+.NavigationBarItem{
+    color: #f5f5f5;
+}

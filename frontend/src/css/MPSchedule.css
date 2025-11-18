@@ -1,0 +1,148 @@
+/* 메인 캘린더 박스: 흰색 카드 느낌 */
+.MPSchedulePage {
+    width: 28vw;
+    background-color: #111118;             /* 흰색 카드 */
+    border-radius: 18px;
+    padding: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e5e5e5;
+}
+
+/* 화면이 768px 이하일 때 */
+@media (max-width: 768px) {
+    .MPSchedulePage {
+        width: 90%;
+        height: auto;
+        margin: 0 auto; /* 중앙 정렬 */
+    }
+}
+
+/* 캘린더 전체 박스 */
+.custom-mainschedule .react-calendar {
+    width: 100%;
+    font-size: 0.85em;
+    background: #111118;
+    border: none;
+    color: #111118;     /* 진한 글씨 */
+    border: 1px solid #f5f5f5;
+}
+
+@media (max-width: 768px) {
+    .custom-mainschedule .react-calendar {
+        width: 90vw;
+        font-size: 0.85em;
+    }
+
+    .calendar-container {
+        display: flex;
+        justify-content: center;
+    }
+}
+
+/* ===== 네비게이션 영역(월/년, 화살표) ===== */
+
+.custom-mainschedule .react-calendar__navigation {
+    margin-bottom: 8px;
+}
+
+.custom-mainschedule .react-calendar__navigation button {
+    background: #111118;
+    border: none;
+    color: #111118;
+    font-size: 0.9rem;
+}
+
+/* 월/연도 텍스트 */
+.custom-mainschedule .react-calendar__navigation__label__labelText {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #d32f2f;            /* 레드 포인트 */
+    letter-spacing: 0.05em;
+}
+
+/* 화살표 버튼 */
+.custom-mainschedule .react-calendar__navigation__arrow {
+    color: white !important;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-mainschedule .react-calendar__navigation__arrow:enabled:hover,
+.custom-mainschedule .react-calendar__navigation__label:enabled:hover {
+    background: #f5f5f5;
+    border-radius: 999px;
+}
+
+/* ===== 요일 헤더 ===== */
+
+.custom-mainschedule .react-calendar__month-view__weekdays {
+    text-align: center;
+    text-transform: none;
+    font-size: 0.75rem;
+    color: #999999;
+    background-color: #111118;
+}
+
+/* 주말 색 살짝 강조 */
+.custom-mainschedule .react-calendar__month-view__weekdays__weekday--weekend {
+    color: #ff4d4f;
+}
+
+/* ===== 날짜 타일 ===== */
+
+.custom-mainschedule .react-calendar__tile {
+    position: relative;
+    box-sizing: border-box;
+    width: 40px;
+    height: 8vh;
+    padding: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-align: left;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    border-radius: 10px;
+    background: #111118;              /* 흰색 타일 */
+}
+
+/* 평일 타일 (weekday-tile 클래스 사용 중이면) */
+.custom-mainschedule .weekday-tile {
+    background: #111118;
+    color: white;
+}
+
+/* hover / 포커스 */
+.custom-mainschedule .react-calendar__tile:enabled:hover,
+.custom-mainschedule .react-calendar__tile:enabled:focus {
+    background: #f0f0f0;
+}
+
+/* 선택된 날짜 */
+.custom-mainschedule .react-calendar__tile--active {
+    background-color: #111118 !important;
+    color: #333333;
+}
+
+/* 비활성화된 날짜 */
+.custom-mainschedule .react-calendar__tile:disabled {
+    color: #cccccc;
+    background: #ffffff;
+}
+
+/* 경기 있는 날 마커(🔥 아이콘) */
+.custom-mainschedule .game-marker {
+    position: absolute;
+    right: 4px;
+    bottom: 4px;
+    font-size: 0.7rem;
+}
+
+/* 오늘 날짜 */
+.custom-mainschedule .react-calendar__tile--now {
+    border: 1px solid #e02424;
+    background: #111118 !important;
+    color: white;
+}

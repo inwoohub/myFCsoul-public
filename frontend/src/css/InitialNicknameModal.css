@@ -1,0 +1,34 @@
+.InitialNicknameModal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 9999;          /* 굉장히 높은 값으로 설정 */
+    font-size: 13px;
+}
+
+.InitialNicknameModal-content{
+    background: #212121;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 360px; max-width: 90%;
+    z-index: 10000;         /* overlay보다 한 단계 높게 */
+    position: relative;
+    color: #EFE7E7
+}
+
+.InitialNicknameModal-content input {
+    width: 100%;
+    padding: 0.5rem;
+    box-sizing: border-box;
+}
+.InitialNicknameModal-actions {
+    margin-top: 1.5rem;
+    display: flex; justify-content: center; gap: 0.5rem;
+}
+.InitialNicknameModal-actions button {
+    padding: 0.5rem 1rem;
+    background-color: #EFE7E7;
+    cursor: pointer;
+}

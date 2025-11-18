@@ -1,0 +1,106 @@
+.StatisticsPage{
+    background-color: #111118;
+    min-height: 150vh;
+}
+
+.StatisticsPageTop{
+    display: flex;
+    justify-content: center;
+    margin-top: 10vh;
+    color: #EFE7E7;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.Seoul_ai_png{
+    width: 250px;
+}
+
+@media (max-width: 768px) {
+    .Seoul_ai_png {
+        width: 150px;
+    }
+}
+
+.StatisticsPageMiddle{
+    display: flex;
+    justify-content: center;
+    margin-top: 5vh;
+    color: #EFE7E7;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.StatisticsPageBottom{
+    display: flex;
+    justify-content: center;
+    margin-top: 5vh;
+    color: #EFE7E7;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.prediction-result{
+    display: flex;
+    justify-content: center;
+    margin-top: 5vh;
+    color: #EFE7E7;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+@media (max-width: 768px) {
+    .prediction-result {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    .StatisticsPageMiddle span {
+        white-space: normal;
+    }
+}
+
+/* 기본에는 br 숨기기 */
+.mobile-only {
+    display: none;
+}
+
+/* 768px 이하에서만 br 보이기 */
+@media (max-width: 768px) {
+    .mobile-only {
+        display: block;
+        margin-left: 15px;
+    }
+}
+
+/* 기본: 데스크탑(>768px)에서만 데스크탑 문구 보이기, 모바일 문구 숨기기 */
+.desktop-text { display: inline; }
+.mobile-text  { display: none;  }
+
+/* 화면 너비 768px 이하일 때 */
+@media (max-width: 768px) {
+    .desktop-text { display: none; }
+    .mobile-text  { display: inline; }
+}
+
+.loader-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.prediction-result2{
+    justify-items: center;
+    align-items: center;
+    margin-top: 5vh;
+    color: #EFE7E7;
+    font-weight: bold;
+    font-size: 15px;
+}

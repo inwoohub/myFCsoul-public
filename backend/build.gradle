@@ -1,0 +1,60 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.4.4'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.myfcseoul'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    withSourcesJar()
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'mysql:mysql-connector-java:8.0.33'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+    implementation 'org.jsoup:jsoup:1.16.1'
+    implementation 'com.theokanning.openai-gpt3-java:client:0.10.0'
+    implementation platform('org.seleniumhq.selenium:selenium-bom:4.10.0')
+    implementation 'org.seleniumhq.selenium:selenium-java'
+    implementation 'org.seleniumhq.selenium:selenium-chrome-driver'
+    implementation 'io.github.bonigarcia:webdrivermanager:6.1.0'
+
+    implementation platform('software.amazon.awssdk:bom:2.20.15')
+    implementation 'software.amazon.awssdk:s3'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+}
+
+// 컴파일 시 UTF-8 인코딩 적용 (main & test)
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+// bootRun 시 JVM 파일 인코딩도 UTF-8
+tasks.named('bootRun') {
+    doFirst {
+        jvmArgs = jvmArgs + ['-Dfile.encoding=UTF-8']
+    }
+}
+
+// 테스트 실행 시에도 JVM 인코딩 추가
+tasks.named('test') {
+    useJUnitPlatform()
+    jvmArgs = jvmArgs + ['-Dfile.encoding=UTF-8']
+}
+

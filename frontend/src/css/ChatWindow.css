@@ -1,0 +1,117 @@
+/* src/css/ChatWindow.css */
+.chat-window {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 12px;
+    overflow-y: auto;
+
+    /* 세로로 쌓이게 */
+    display: flex;
+    flex-direction: column;
+}
+
+/* 내가 보낸 메시지 (오른쪽 정렬) */
+.my-message {
+    /* 부모 .chat-messages가 flex 컨테이너이므로 이렇게 오른쪽으로 보낼 수 있습니다 */
+    align-self: flex-end;
+
+    /* 또는 margin-left:auto; 로도 같은 효과를 줄 수 있어요 */
+    /* margin-left: auto; */
+
+    background: #2563eb;
+    padding: 8px 12px;
+    border-radius: 16px 16px 0 16px;
+    margin: 4px 0;
+    max-width: 70%;
+    word-wrap: break-word;
+}
+
+/* 상대가 보낸 메시지 (왼쪽 정렬) */
+.their-message {
+    align-self: flex-start;
+    /* 또는 margin-right:auto; */
+    background: #111118;
+    padding: 8px 12px;
+    border-radius: 16px 16px 16px 0;
+    margin: 4px 0;
+    max-width: 70%;
+    word-wrap: break-word;
+    border: 1px solid #f5f5f5;
+}
+
+.chat-input {
+    display: flex;
+    border-top: 1px solid #ddd;
+    padding: 8px;
+    background: #111118;
+}
+
+.chat-input input {
+    flex: 1;
+    border: 1px solid #ccc;
+    border-radius: 16px;
+    padding: 8px 12px;
+    outline: none;
+    font-size: 14px;
+}
+
+.chat-input button {
+    margin-left: 8px;
+    border: none;
+    border-radius: 16px;
+    padding: 8px 16px;
+    cursor: pointer;
+    background: #2563eb;
+    color: white;
+    font-size: 14px;
+}
+
+
+/* 메시지 머리글: 닉네임 + 시간 */
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+    font-size: 12px;
+    color: #f5f5f5;
+}
+
+.sender-name {
+    font-weight: bold;
+}
+
+.message-time {
+    opacity: 0.7;
+}
+
+/* 메시지 본문은 기존 .my-message/.their-message 규칙 그대로 */
+/* .message-content { ... } 필요 시 추가 스타일링 */
+.message-content{
+    color: #f5f5f5;
+}
+
+.date-divider {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+    color: #666;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.date-divider::before,
+.date-divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #ccc;
+    margin: 0 10px;
+}
