@@ -18,7 +18,6 @@ public class CustomOAuth2AuthenticationSuccessHandler implements AuthenticationS
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
-        // 추가적으로 세션 또는 쿠키에 사용자 정보를 저장하는 로직을 넣을 수도 있습니다.
         response.sendRedirect(REDIRECT_URL);
     }
 }

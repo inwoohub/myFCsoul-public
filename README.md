@@ -197,7 +197,7 @@ OpenAI API를 활용하여 하루 1회 텍스트 형태의 상세 예측 리포�
 카카오 OAuth 2.0 기반 소셜 로그인을 통해 사용자를 인증합니다.  
 직접 회원가입/비밀번호 관리 없이, 카카오 계정으로만 서비스에 접근할 수 있도록 설계했습니다.
 
-#### 사용 기술 / 핵심 컴포넌트
+#### ⚒️ 사용 기술 / 핵심 컴포넌트
 - Spring Security OAuth2 Client
 - Kakao OAuth 2.0 API
 - JPA / MySQL `User` 엔티티
@@ -211,7 +211,7 @@ OpenAI API를 활용하여 하루 1회 텍스트 형태의 상세 예측 리포�
     - `CustomOAuth2AuthenticationSuccessHandler` : 로그인 성공 후 리다이렉트 처리
     - `UserRepository` : 사용자 조회/랭킹 조회용 JPA 리포지토리
 
-#### 인증 / 인가 흐름
+#### 🔐 인증 / 인가 흐름
 
 1. **사용자 요청**
     - 클라이언트에서 “카카오 로그인” 버튼 클릭
