@@ -191,7 +191,7 @@ OpenAI API를 활용하여 하루 1회 텍스트 형태의 상세 예측 리포�
 <br>
 
 ## 5. 📌 주요 기능 설계
-### **Kakoa 소셜 로그인 (OAuth 2.0) 기능**
+### **Kakao 소셜 로그인 (OAuth 2.0) 기능**
 <img width="805" height="440" alt="Image" src="https://github.com/user-attachments/assets/9bf370bb-22aa-4dff-8c1f-dbf28a55b0f7" />
 <br>
 카카오 OAuth 2.0 기반 소셜 로그인을 통해 사용자를 인증합니다.  
