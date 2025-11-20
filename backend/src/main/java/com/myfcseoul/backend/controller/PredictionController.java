@@ -49,11 +49,6 @@ public class PredictionController {
         this.userRepo = userRepo;
     }
 
-    @GetMapping("/predict")
-    public ResponseEntity<?> predictGet(@RequestParam String userId) throws Exception {
-        return doPredict(userId);
-    }
-
     @PostMapping("/predict")
     public ResponseEntity<?> predictPost(@RequestParam String userId) throws Exception {
         return doPredict(userId);
