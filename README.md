@@ -236,7 +236,7 @@ OpenAI API를 활용하여 하루 1회 텍스트 형태의 상세 예측 리포�
         - `/api/rankings`, `/api/schedule` : 인증 없이 허용
         - 그 외 대부분의 API : 인증 필수
 
-### 관련 소스 코드
+#### 관련 소스 코드
 
 - [SecurityConfig.java](backend/src/main/java/com/myfcseoul/backend/config/SecurityConfig.java)
 - [CustomOAuth2UserService.java](backend/src/main/java/com/myfcseoul/backend/service/CustomOAuth2UserService.java)
@@ -282,7 +282,7 @@ OpenAI API를 활용하여 하루 1회 텍스트 형태의 상세 예측 리포�
        - 각 항목에 `attended`(0/1/2), `schedule`(경기 정보), `photoKey` 포함  
        - 프론트에서 직관 히스토리/출석 현황/그래프 등에 활용
 
-### 관련 소스 코드
+#### 관련 소스 코드
 
 - [MyDataController.java](backend/src/main/java/com/myfcseoul/backend/controller/MyDataController.java)
 - [AdminMyDataController.java](backend/src/main/java/com/myfcseoul/backend/controller/AdminMyDataController.java)
