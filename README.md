@@ -194,8 +194,7 @@ OpenAI API를 활용하여 하루 1회 텍스트 형태의 상세 예측 리포�
 ### 5-1. **Kakao 소셜 로그인 (OAuth 2.0) 기능**
 <img width="805" height="440" alt="Image" src="https://github.com/user-attachments/assets/9bf370bb-22aa-4dff-8c1f-dbf28a55b0f7" />
 <br>
-카카오 OAuth 2.0 기반 소셜 로그인을 통해 사용자를 인증합니다.  
-직접 회원가입/비밀번호 관리 없이, 카카오 계정으로만 서비스에 접근할 수 있도록 설계했습니다.
+카카오 OAuth 2.0 기반 소셜 로그인을 통해 사용자를 인증합니다. 
 
 #### API 설계
 
@@ -249,8 +248,8 @@ OpenAI API를 활용하여 하루 1회 텍스트 형태의 상세 예측 리포�
 ### 5-2. **직관 기록 기능**
 <img width="800" height="436" alt="Image" src="https://github.com/user-attachments/assets/66f27f0b-d777-46ad-aee0-ed064904a34b" />
 <br>
-세션 기반 인증( `JSESSIONID` )과 Spring Data JPA를 이용해  
-경기별 직관 사진을 제출하고, 나의 출석 내역을 조회할 수 있도록 설계했습니다.  
+세션 기반 인증과 Spring Data JPA를 이용해 경기별 직관 사진을 제출하고 <br>
+나의 출석 내역을 조회할 수 있도록 설계했습니다.  
 
 #### API 설계
 
@@ -364,7 +363,7 @@ OpenAI API를 활용하여 하루 1회 텍스트 형태의 상세 예측 리포�
 ---
 
 ### 5-4. **AI 경기 예측 기능**
-
+<img width="922" height="487" alt="Image" src="https://github.com/user-attachments/assets/675e4e4d-0f57-4fe2-9463-3ee9a4732a85" />
 <br>
 
 ---
