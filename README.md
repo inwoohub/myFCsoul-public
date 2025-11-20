@@ -294,8 +294,72 @@ OpenAI API를 활용하여 하루 1회 텍스트 형태의 상세 예측 리포�
 ---
 
 ### 5-3. **다이어리 기능**
-
+<img width="750" height="296" alt="Image" src="https://github.com/user-attachments/assets/c80bd3fa-5281-4071-90a8-a0c018fd8b9d" />
 <br>
+경기 직관 후 느낀 점과 사진을 다이어리 형태로 기록하고,  
+URL(`/diary/{userId}`)을 통해 다른 FC서울 팬들의 직관 기록도 함께 구경할 수 있도록 설계했습니다.
+
+#### API 설계
+
+1. **다이어리 생성 – `POST /api/gallery`**
+    - Request Body (JSON)
+      ```json
+      {
+        "userId": "4540681543",
+        "title": "수원전 3:0 완승 직관",
+        "content": "분위기 미쳤다…",
+        "imageUrl": "https://s3.../gallery/2025-04-01-xxxx.jpg",
+        "createdAt": "2025-04-01T18:30:00"
+      }
+      ```
+    - 처리 과정
+        - `userId`로 `UserRepository.findById(...)` 호출 → 작성자 `User` 엔티티 조회
+        - `CreateGalleryRequestDTO` 의 필드를 이용해 `Gallery` 엔티티 생성
+            - `user`, `title`, `content`, `imageUrl`, `createdAt` 세팅
+        - `GalleryRepository.save(gallery)` 로 DB에 저장
+    - 응답
+        - 생성된 `Gallery` 엔티티(JSON) + `201 CREATED`
+
+2. **특정 사용자의 다이어리 목록 조회 – `GET /api/gallery/{userId}`**
+    - 처리 과정
+        - Path Variable `{userId}`를 이용해  
+          `GalleryRepository.findByUserUserId(userId)` 호출
+        - 해당 사용자의 다이어리 목록을 최신순 정렬은 프론트에서 수행
+    - 응답
+        - `Gallery` 리스트(JSON)
+            - 각 항목에 `galleryId`, `title`, `content`, `imageUrl`, `createdAt`, `user` 정보 포함
+            - 프론트에서 `/diary/{userId}` 페이지에 그리드 카드 형태로 렌더링
+
+3. **다이어리 수정 – `PUT /api/gallery/{galleryId}`**
+    - Request Body (JSON)
+      ```json
+      {
+        "title": "수원전 3:0 완승 직관 (사진 업데이트)",
+        "content": "후반 분위기 추가 기록...",
+        "imageUrl": "https://s3.../gallery/2025-04-01-updated.jpg",
+        "createdAt": "2025-04-01T18:30:00"
+      }
+      ```
+    - 처리 과정
+        - `galleryId`로 `GalleryRepository.findById(...)` 호출 → 기존 다이어리 조회
+        - 작성자 `user`는 변경하지 않고,  
+          `title`, `content`, `imageUrl`, `createdAt` 필드만 업데이트
+        - `GalleryRepository.save(existing)` 로 수정 내용 저장
+    - 응답
+        - 수정된 `Gallery` 엔티티(JSON)
+
+4. **다이어리 삭제 – `DELETE /api/gallery/{galleryId}`**
+    - 처리 과정
+        - `GalleryRepository.deleteById(galleryId)` 호출로 해당 다이어리 삭제
+    - 응답
+        - `204 No Content`
+
+#### 관련 소스 코드
+
+- [Gallery.java](backend/src/main/java/com/myfcseoul/backend/model/Gallery.java)
+- [GalleryRepository.java](backend/src/main/java/com/myfcseoul/backend/repository/GalleryRepository.java)
+- [GalleryController.java](backend/src/main/java/com/myfcseoul/backend/controller/GalleryController.java)
+- [CreateGalleryRequestDTO.java](backend/src/main/java/com/myfcseoul/backend/dto/CreateGalleryRequestDTO.java)
 
 ---
 
