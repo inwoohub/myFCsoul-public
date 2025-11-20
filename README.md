@@ -365,8 +365,124 @@ OpenAI API를 활용하여 하루 1회 텍스트 형태의 상세 예측 리포�
 ### 5-4. **AI 경기 예측 기능**
 <img width="922" height="487" alt="Image" src="https://github.com/user-attachments/assets/675e4e4d-0f57-4fe2-9463-3ee9a4732a85" />
 <br>
+사용자의 직관 기록(승/무/패), K리그 공식 사이트에서 스크래핑한 현재 순위 및 최근 5경기 폼
+그리고 DB에 저장된 다음 경기 일정 정보를 종합해서 OpenAI GPT 모델에게 프롬프트를 전달하고 다음 경기 결과(승/무/패 + 스코어)를 분석·예측하는 기능입니다.
+
+#### API 설계
+
+1. **경기 예측 요청 – `GET /api/predict?userId=...` , `POST /api/predict?userId=...`**
+
+   - **요청 파라미터**
+     - `userId` : 예측을 요청하는 사용자 ID (카카오 고유 ID)
+
+   - **처리 과정**
+     1. `UserRepository.findById(userId)` 로 사용자 조회  
+        → 없으면 `401 UNAUTHORIZED` + `"로그인이 필요합니다."`
+     2. **일반 사용자**인 경우, `lastPredictionAt` 기준으로  
+        → **하루 1회만 예측 가능**하도록 제한  
+        - 오늘 이미 예측했다면 `429 TOO_MANY_REQUESTS` 반환
+     3. `MyDataService.getByUserId(userId)` 로 사용자의 직관 데이터 조회  
+        - 내부에서 `MyDataRepository.findByUserUserIdAndAttended(userId, 1)` 실행  
+        - 승인된(`attended = 1`) 직관 데이터만 필터링
+     4. `ScheduleService.getNextMatch()` 로 **다음 경기 일정** 조회
+     5. `KLeagueScraperService.fetchStandings()` 로  
+        K리그 팀 순위 + 최근 5경기 폼(승·무·패) 스크래핑
+     6. 위 세 데이터를 `PromptBuilder.build(...)` 에 전달해  
+        → GPT에게 전달할 **한국어 프롬프트 문자열 생성**
+     7. `OpenAiClientService.getPrediction(prompt)` 호출  
+        → OpenAI Chat Completions API (`gpt-4.1-mini`)로 예측 결과 문장 획득
+     8. **일반 사용자**인 경우  
+        - `user.lastPredictionAt = now()`  
+        - `user.lastPredictionResult = prediction`  
+        로 DB에 저장 (하루 1회 제한 및 캐시 용도)
+     9. 최종 예측 결과를 JSON으로 반환:
+        ```json
+        {
+          "prediction": "서울이 2:1로 승리할 것으로 예상됩니다... (이하 GPT 응답)"
+        }
+        ```
+
+   - **응답**
+     - 성공: `200 OK` + `{ "prediction": "<AI 예측 결과 텍스트>" }`
+     - 하루 1회 제한 초과: `429 TOO_MANY_REQUESTS`
+     - 미로그인 또는 잘못된 userId: `401 UNAUTHORIZED`
+
+2. **오늘의 예측 결과 조회 – `GET /api/prediction`**
+
+   - **인증 방식**
+     - `Principal` 을 사용해 현재 세션의 로그인 사용자 식별  
+       → `principal.getName()` = 카카오 `userId`
+
+   - **처리 과정**
+     1. `principal == null` 이면 `401 UNAUTHORIZED`
+     2. `UserRepository.findById(principal.getName())` 로 사용자 조회
+     3. `user.lastPredictionAt` 의 날짜가 **오늘**이고  
+        `lastPredictionResult` 가 존재하면  
+        → 오늘 이미 생성해 둔 예측 결과를 그대로 반환
+     4. 오늘 예측한 기록이 없다면 `204 No Content` 반환
+
+   - **응답 예시**
+     ```json
+     {
+       "prediction": "서울이 1:0으로 근소하게 승리할 것으로 예상됩니다..."
+     }
+     ```
 
 ---
+
+#### 내부 동작 구성
+
+1. **K리그 순위·폼 수집 – `KLeagueScraperService`**
+   - Selenium(ChromeDriver) + Jsoup 사용
+   - `https://www.kleague.com/record/team.do` 에 접속 후
+     - 그룹 A/B 순위 테이블(`#ts1`, `#ts2`)에서
+     - 팀명, 순위, 최근 5경기 폼(승·무·패)을 파싱
+   - `Standing(group, rank, team, recentForm)` 리스트로 반환
+
+2. **프롬프트 생성 – `PromptBuilder`**
+   - **입력**
+     - `List<MyData> myList` : 사용자의 승인된 직관 기록(`attended = 1`)
+     - `List<Standing> standings` : 현재 리그 순위/폼
+     - `Schedule nextMatch` : 다음 경기 정보(홈/원정, 일시, 장소)
+   - **처리**
+     - 직관 승/무/패 카운트
+     - 순위/폼을 **마크다운 테이블 형식**으로 변환
+     - 다음 경기 정보를  
+       예) `"서울 vs 대구  2025년 4월 1일 19시 00분  장소: 상암월드컵경기장"`  
+       같은 문장으로 포맷팅
+     - “예측 요청/양식/근거 작성 방법”을 상세히 적은  
+       긴 한국어 프롬프트 문자열 생성
+   - **출력**
+     - OpenAI Chat API에 그대로 전달할 최종 `String prompt`
+
+3. **OpenAI 호출 – `OpenAiClientService`**
+   - `POST https://api.openai.com/v1/chat/completions`
+   - **Request Body**
+     ```json
+     {
+       "model": "gpt-4.1-mini",
+       "messages": [
+         { "role": "user", "content": "<PromptBuilder가 만든 프롬프트>" }
+       ],
+       "temperature": 0.2
+     }
+     ```
+   - 응답에서 `choices[0].message.content` 를 꺼내  
+     → 최종 예측 결과 텍스트로 사용
+
+---
+
+#### 관련 소스 코드
+
+- [PredictionController.java](backend/src/main/java/com/myfcseoul/backend/controller/PredictionController.java)
+- [OpenAiClientService.java](backend/src/main/java/com/myfcseoul/backend/service/OpenAiClientService.java)
+- [PromptBuilder.java](backend/src/main/java/com/myfcseoul/backend/service/PromptBuilder.java)
+- [KLeagueScraperService.java](backend/src/main/java/com/myfcseoul/backend/service/KLeagueScraperService.java)
+- [MyDataService.java](backend/src/main/java/com/myfcseoul/backend/service/MyDataService.java)
+- [ScheduleService.java](backend/src/main/java/com/myfcseoul/backend/service/ScheduleService.java)
+
+---
+
 
 ### 5-5. **채팅 기능**
 
