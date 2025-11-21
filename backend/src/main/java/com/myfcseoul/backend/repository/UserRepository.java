@@ -50,18 +50,6 @@ public interface UserRepository extends JpaRepository<User, String> {
     )
     List<AttendanceRankDTO> findTopAttendance(Pageable pageable);
 
-    // 응원 요정
-    @Query("""
-        SELECT u.nickname AS nickname,
-               COUNT(cm)    AS messageCount
-          FROM CheerMessage cm
-          JOIN cm.user u
-         GROUP BY u.nickname
-         ORDER BY COUNT(cm) DESC
-        """
-    )
-    List<CheerRankDTO> findTopCheer(Pageable pageable);
-
     // 승리요정: 직관(attended=1)한 경기 중 '승' 비율 상위 N명
     @Query("""
         SELECT new com.myfcseoul.backend.dto.WinRateRankDTO(

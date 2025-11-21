@@ -18,7 +18,6 @@ public class RankingController {
 
     @GetMapping("/rankings")
     public RankingResponse getRankings() {
-        // 캐시된 랭킹 결과를 반환
         return rankingService.getCachedRanking();
     }
 }

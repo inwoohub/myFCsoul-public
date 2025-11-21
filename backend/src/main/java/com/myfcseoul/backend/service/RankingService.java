@@ -24,19 +24,15 @@ public class RankingService {
         refreshCache();  // 애플리케이션 시작 시에도 즉시 캐싱
     }
 
-    /** 하루에 한 번, 서울 시간 자정(00:00)마다 실행 */
     @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")
     public void refreshCache() {
         var top5 = PageRequest.of(0, 5);
         List<AttendanceRankDTO> attends = userRepo.findTopAttendance(top5);
-        List<CheerRankDTO>       cheers  = userRepo.findTopCheer(top5);
         List<WinRateRankDTO>     wins    = userRepo.findTopWinRate(top5);
 
-        cache = new RankingResponse(attends, cheers, wins);
-        System.out.println("【RankingService】 랭킹 캐시 업데이트: " + cache);
+        cache = new RankingResponse(attends, wins);
     }
 
-    /** 캐시된 랭킹을 반환합니다 */
     public RankingResponse getCachedRanking() {
         if (cache == null) {
             refreshCache();

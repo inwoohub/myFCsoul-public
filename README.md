@@ -292,77 +292,176 @@ OpenAI API를 활용하여 하루 1회 텍스트 형태의 상세 예측 리포�
 
 ---
 
-### 5-3. **다이어리 기능**
-<img width="750" height="296" alt="Image" src="https://github.com/user-attachments/assets/c80bd3fa-5281-4071-90a8-a0c018fd8b9d" />
+### 5-2. **랭킹 기능**
+<img width="874" height="329" alt="Image" src="https://github.com/user-attachments/assets/3bc99b20-3aed-4456-8ed0-166601ff50c9" />
 <br>
-경기 직관 후 느낀 점과 사진을 다이어리 형태로 기록하고<br>
-다른 FC서울 팬들의 직관 기록도 함께 구경할 수 있도록 설계했습니다.
+직관 기록과 경기 결과를 기반으로 랭킹을 계산하여 메인 페이지에 제공하는 기능입니다. 랭킹 계산은 한 번만 수행하고, 그 결과를 서버 메모리 캐시에 저장해 빠르게 조회할 수 있도록 설계했습니다.
+
+---
 
 #### API 설계
 
-1. **다이어리 생성 – `POST /api/gallery`**
-   - Request Body (JSON)
-     ```json
-     {
-       "userId": "4540681543",
-       "title": "수원전 3:0 완승 직관",
-       "content": "분위기 미쳤다…",
-       "imageUrl": "https://s3.../gallery/2025-04-01-xxxx.jpg",
-       "createdAt": "2025-04-01T18:30:00"
-     }
-     ```
-   - 처리 과정
-     - `userId`로 `UserRepository.findById(...)` 호출 → 작성자 `User` 엔티티 조회  
-     - `CreateGalleryRequestDTO` 의 필드를 이용해 `Gallery` 엔티티 생성  
-       - `user`, `title`, `content`, `imageUrl`, `createdAt` 세팅  
-     - `GalleryRepository.save(gallery)` 로 DB에 저장  
-   - 응답
-     - 생성된 `Gallery` 엔티티(JSON) + `201 CREATED`
+1. **랭킹 조회 – `GET /api/rankings`**
 
-2. **특정 사용자의 다이어리 목록 조회 – `GET /api/gallery/{userId}`**
-   - 처리 과정
-     - Path Variable `{userId}`를 이용해  
-       `GalleryRepository.findByUserUserId(userId)` 호출  
-     - 해당 사용자의 다이어리 목록을 최신순 정렬은 프론트에서 수행
-   - 응답
-     - `Gallery` 리스트(JSON)  
-       - 각 항목에 `galleryId`, `title`, `content`, `imageUrl`, `createdAt`, `user` 정보 포함  
-       - 프론트에서 `/diary/{userId}` 페이지에 그리드 카드 형태로 렌더링
+    - **요청 파라미터**
+        - 없음 (전체 랭킹을 한 번에 조회)
 
-3. **다이어리 수정 – `PUT /api/gallery/{galleryId}`**
-   - Request Body (JSON)
-     ```json
-     {
-       "title": "수원전 3:0 완승 직관 (사진 업데이트)",
-       "content": "후반 분위기 추가 기록...",
-       "imageUrl": "https://s3.../gallery/2025-04-01-updated.jpg",
-       "createdAt": "2025-04-01T18:30:00"
-     }
-     ```
-   - 처리 과정
-     - `galleryId`로 `GalleryRepository.findById(...)` 호출 → 기존 다이어리 조회  
-     - 작성자 `user`는 변경하지 않고,  
-       `title`, `content`, `imageUrl`, `createdAt` 필드만 업데이트  
-     - `GalleryRepository.save(existing)` 로 수정 내용 저장
-   - 응답
-     - 수정된 `Gallery` 엔티티(JSON)
+    - **처리 과정**
+        1. `RankingController.getRankings()` 호출
+           ```java
+           @GetMapping("/rankings")
+           public RankingResponse getRankings() {
+               return rankingService.getCachedRanking();
+           }
+           ```
+        2. `RankingService.getCachedRanking()` 에서
+            - 메모리에 캐시된 `RankingResponse cache` 를 반환
+            - 애플리케이션 시작 직후 등으로 `cache == null` 인 경우  
+              `refreshCache()` 를 한 번 실행하여 캐시를 채운 뒤 반환
+        3. 최종적으로 아래 구조의 JSON 을 반환
+            - `attendanceKings` : 직관 횟수 상위 N명
+            - `winFairies` : 직관 승률 상위 N명
 
-4. **다이어리 삭제 – `DELETE /api/gallery/{galleryId}`**
-   - 처리 과정
-     - `GalleryRepository.deleteById(galleryId)` 호출로 해당 다이어리 삭제
-   - 응답
-     - `204 No Content`
+    - **응답 예시**
+      ```json
+      {
+        "attendanceKings": [
+          { "nickname": "직관1등", "attendanceCount": 15 }
+        ],
+        "winFairies": [
+          {
+            "nickname": "승리요정1",
+            "totalAttendance": 10,
+            "winCount": 8,
+            "winRate": 80.0
+          }
+        ]
+      }
+      ```
+
+---
+
+#### 내부 동작 구성
+
+1. **랭킹 응답 DTO – `RankingResponse`**
+
+    - **필드**
+        - `List<AttendanceRankDTO> attendanceKings`
+            - 닉네임 + 직관 횟수
+        - `List<WinRateRankDTO> winFairies`
+            - 닉네임 + 총 직관 수 + 승리 수 + 승률(%)
+
+    - 랭킹 조회 결과를 하나의 객체로 묶어 `/api/rankings` 응답 바디로 직렬화하는 역할을 한다.
+
+2. **비즈니스 로직 및 캐싱 – `RankingService`**
+
+    - **필드**
+        - `UserRepository userRepo` : 랭킹 계산에 필요한 집계 쿼리 제공
+        - `private volatile RankingResponse cache;`
+            - 서버 메모리에 저장되는 랭킹 캐시
+            - `volatile` 로 여러 스레드에서 항상 최신 값이 보이도록 보장
+
+    - **주요 메서드**
+        - `refreshCache()`
+          ```java
+          @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")
+          public void refreshCache() {
+              var top5 = PageRequest.of(0, 5);
+              List<AttendanceRankDTO> attends = userRepo.findTopAttendance(top5);
+              List<WinRateRankDTO>    wins    = userRepo.findTopWinRate(top5);
+   
+              cache = new RankingResponse(attends, wins);
+              System.out.println("【RankingService】 랭킹 캐시 업데이트: " + cache);
+          }
+          ```
+            - 매일 00:00(Asia/Seoul) 에 스케줄러가 실행
+            - `UserRepository` 의 집계 쿼리를 통해
+                - 직관 횟수 TOP N
+                - 직관 승률 TOP N
+                  을 조회
+            - 조회 결과를 새로운 `RankingResponse` 로 만들어 `cache` 필드에 저장  
+              → 다이어그램 상의 **Server Memory Cache** 업데이트
+            - 생성자에서도 한 번 호출하여 애플리케이션 시작 시 즉시 캐시를 채움
+        - `getCachedRanking()`
+          ```java
+          public RankingResponse getCachedRanking() {
+              if (cache == null) {
+                  refreshCache();
+              }
+              return cache;
+          }
+          ```
+            - 컨트롤러에서 호출하는 메서드로,  
+              이미 계산된 캐시가 있다면 그대로 반환하고  
+              없으면 한 번만 `refreshCache()` 를 수행한 뒤 반환
+            - 덕분에 `/api/rankings` 요청마다 무거운 집계 쿼리를 다시 수행하지 않고,  
+              **캐시 조회만으로 빠르게 응답**할 수 있다.
+
+3. **집계 쿼리 – `UserRepository`**
+
+    - **직관왕 – `findTopAttendance(Pageable pageable)`**
+      ```java
+      @Query("""
+          SELECT u.nickname AS nickname,
+                 COUNT(md)  AS attendanceCount
+            FROM MyData md
+            JOIN md.user u
+           WHERE md.attended = 1
+             AND u.nickname <> 'Unknown'
+           GROUP BY u.nickname
+           ORDER BY COUNT(md) DESC
+          """
+      )
+      List<AttendanceRankDTO> findTopAttendance(Pageable pageable);
+      ```
+        - 직관 인증 완료(`attended = 1`)된 `MyData` 기준으로
+            - 유저 닉네임별 직관 횟수를 카운트
+            - 횟수 기준 내림차순 정렬 후 상위 N명 반환
+
+    - **승리 요정 – `findTopWinRate(Pageable pageable)`**
+      ```java
+      @Query("""
+          SELECT new com.myfcseoul.backend.dto.WinRateRankDTO(
+                   u.nickname,
+                   COUNT(md),
+                   SUM(CASE WHEN s.result = '승' THEN 1 ELSE 0 END),
+                   SUM(CASE WHEN s.result = '승' THEN 1 ELSE 0 END) * 100.0 / COUNT(md)
+                 )
+            FROM MyData md
+            JOIN md.user u
+            JOIN md.schedule s
+           WHERE md.attended = 1
+             AND u.nickname <> 'Unknown'
+             AND s.result IS NOT NULL
+           GROUP BY u.nickname
+           HAVING COUNT(md) > 5
+           ORDER BY SUM(CASE WHEN s.result = '승' THEN 1 ELSE 0 END) * 100.0 / COUNT(md) DESC
+          """
+      )
+      List<WinRateRankDTO> findTopWinRate(Pageable pageable);
+      ```
+        - 사용자의 직관 경기(`attended = 1`) 중 결과가 있는 경기만 대상으로
+            - 총 직관 수(`COUNT(md)`)
+            - 승리 수(`SUM(CASE WHEN s.result = '승' THEN 1 ELSE 0 END)`)
+            - 승률(`winCount * 100.0 / totalAttendance`)
+              를 한 번에 계산
+        - `HAVING COUNT(md) > 5` 조건으로 **최소 5경기 이상 직관한 사용자**만 포함
+        - 승률 기준 내림차순 정렬 후 상위 N명 반환
+
+---
 
 #### 관련 소스 코드
 
-- [Gallery.java](backend/src/main/java/com/myfcseoul/backend/model/Gallery.java)
-- [GalleryRepository.java](backend/src/main/java/com/myfcseoul/backend/repository/GalleryRepository.java)
-- [GalleryController.java](backend/src/main/java/com/myfcseoul/backend/controller/GalleryController.java)
-- [CreateGalleryRequestDTO.java](backend/src/main/java/com/myfcseoul/backend/dto/CreateGalleryRequestDTO.java)
-  
+- [RankingController.java](backend/src/main/java/com/myfcseoul/backend/controller/RankingController.java)
+- [RankingService.java](backend/src/main/java/com/myfcseoul/backend/service/RankingService.java)
+- [RankingResponse.java](backend/src/main/java/com/myfcseoul/backend/dto/RankingResponse.java)
+- [AttendanceRankDTO.java](backend/src/main/java/com/myfcseoul/backend/dto/AttendanceRankDTO.java)
+- [WinRateRankDTO.java](backend/src/main/java/com/myfcseoul/backend/dto/WinRateRankDTO.java)
+- [UserRepository.java](backend/src/main/java/com/myfcseoul/backend/repository/UserRepository.java)
+
 ---
 
-### 5-4. **AI 경기 예측 기능**
+### 5-3. **AI 경기 예측 기능**
 <img width="922" height="487" alt="Image" src="https://github.com/user-attachments/assets/675e4e4d-0f57-4fe2-9463-3ee9a4732a85" />
 <br>
 사용자의 직관 기록(승/무/패), K리그 공식 사이트에서 스크래핑한 현재 순위 및 최근 5경기 폼
@@ -372,103 +471,103 @@ OpenAI API를 활용하여 하루 1회 텍스트 형태의 상세 예측 리포�
 
 1. **경기 예측 요청 – `GET /api/predict?userId=...` , `POST /api/predict?userId=...`**
 
-   - **요청 파라미터**
-     - `userId` : 예측을 요청하는 사용자 ID (카카오 고유 ID)
+    - **요청 파라미터**
+        - `userId` : 예측을 요청하는 사용자 ID (카카오 고유 ID)
 
-   - **처리 과정**
-     1. `UserRepository.findById(userId)` 로 사용자 조회  
-        → 없으면 `401 UNAUTHORIZED` + `"로그인이 필요합니다."`
-     2. **일반 사용자**인 경우, `lastPredictionAt` 기준으로  
-        → **하루 1회만 예측 가능**하도록 제한  
-        - 오늘 이미 예측했다면 `429 TOO_MANY_REQUESTS` 반환
-     3. `MyDataService.getByUserId(userId)` 로 사용자의 직관 데이터 조회  
-        - 내부에서 `MyDataRepository.findByUserUserIdAndAttended(userId, 1)` 실행  
-        - 승인된(`attended = 1`) 직관 데이터만 필터링
-     4. `ScheduleService.getNextMatch()` 로 **다음 경기 일정** 조회
-     5. `KLeagueScraperService.fetchStandings()` 로  
-        K리그 팀 순위 + 최근 5경기 폼(승·무·패) 스크래핑
-     6. 위 세 데이터를 `PromptBuilder.build(...)` 에 전달해  
-        → GPT에게 전달할 **한국어 프롬프트 문자열 생성**
-     7. `OpenAiClientService.getPrediction(prompt)` 호출  
-        → OpenAI Chat Completions API (`gpt-4.1-mini`)로 예측 결과 문장 획득
-     8. **일반 사용자**인 경우  
-        - `user.lastPredictionAt = now()`  
-        - `user.lastPredictionResult = prediction`  
-        로 DB에 저장 (하루 1회 제한 및 캐시 용도)
-     9. 최종 예측 결과를 JSON으로 반환:
-        ```json
-        {
-          "prediction": "서울이 2:1로 승리할 것으로 예상됩니다... (이하 GPT 응답)"
-        }
-        ```
+    - **처리 과정**
+        1. `UserRepository.findById(userId)` 로 사용자 조회  
+           → 없으면 `401 UNAUTHORIZED` + `"로그인이 필요합니다."`
+        2. **일반 사용자**인 경우, `lastPredictionAt` 기준으로  
+           → **하루 1회만 예측 가능**하도록 제한
+            - 오늘 이미 예측했다면 `429 TOO_MANY_REQUESTS` 반환
+        3. `MyDataService.getByUserId(userId)` 로 사용자의 직관 데이터 조회
+            - 내부에서 `MyDataRepository.findByUserUserIdAndAttended(userId, 1)` 실행
+            - 승인된(`attended = 1`) 직관 데이터만 필터링
+        4. `ScheduleService.getNextMatch()` 로 **다음 경기 일정** 조회
+        5. `KLeagueScraperService.fetchStandings()` 로  
+           K리그 팀 순위 + 최근 5경기 폼(승·무·패) 스크래핑
+        6. 위 세 데이터를 `PromptBuilder.build(...)` 에 전달해  
+           → GPT에게 전달할 **한국어 프롬프트 문자열 생성**
+        7. `OpenAiClientService.getPrediction(prompt)` 호출  
+           → OpenAI Chat Completions API (`gpt-4.1-mini`)로 예측 결과 문장 획득
+        8. **일반 사용자**인 경우
+            - `user.lastPredictionAt = now()`
+            - `user.lastPredictionResult = prediction`  
+              로 DB에 저장 (하루 1회 제한 및 캐시 용도)
+        9. 최종 예측 결과를 JSON으로 반환:
+           ```json
+           {
+             "prediction": "서울이 2:1로 승리할 것으로 예상됩니다... (이하 GPT 응답)"
+           }
+           ```
 
-   - **응답**
-     - 성공: `200 OK` + `{ "prediction": "<AI 예측 결과 텍스트>" }`
-     - 하루 1회 제한 초과: `429 TOO_MANY_REQUESTS`
-     - 미로그인 또는 잘못된 userId: `401 UNAUTHORIZED`
+    - **응답**
+        - 성공: `200 OK` + `{ "prediction": "<AI 예측 결과 텍스트>" }`
+        - 하루 1회 제한 초과: `429 TOO_MANY_REQUESTS`
+        - 미로그인 또는 잘못된 userId: `401 UNAUTHORIZED`
 
 2. **오늘의 예측 결과 조회 – `GET /api/prediction`**
 
-   - **인증 방식**
-     - `Principal` 을 사용해 현재 세션의 로그인 사용자 식별  
-       → `principal.getName()` = 카카오 `userId`
+    - **인증 방식**
+        - `Principal` 을 사용해 현재 세션의 로그인 사용자 식별  
+          → `principal.getName()` = 카카오 `userId`
 
-   - **처리 과정**
-     1. `principal == null` 이면 `401 UNAUTHORIZED`
-     2. `UserRepository.findById(principal.getName())` 로 사용자 조회
-     3. `user.lastPredictionAt` 의 날짜가 **오늘**이고  
-        `lastPredictionResult` 가 존재하면  
-        → 오늘 이미 생성해 둔 예측 결과를 그대로 반환
-     4. 오늘 예측한 기록이 없다면 `204 No Content` 반환
+    - **처리 과정**
+        1. `principal == null` 이면 `401 UNAUTHORIZED`
+        2. `UserRepository.findById(principal.getName())` 로 사용자 조회
+        3. `user.lastPredictionAt` 의 날짜가 **오늘**이고  
+           `lastPredictionResult` 가 존재하면  
+           → 오늘 이미 생성해 둔 예측 결과를 그대로 반환
+        4. 오늘 예측한 기록이 없다면 `204 No Content` 반환
 
-   - **응답 예시**
-     ```json
-     {
-       "prediction": "서울이 1:0으로 근소하게 승리할 것으로 예상됩니다..."
-     }
-     ```
+    - **응답 예시**
+      ```json
+      {
+        "prediction": "서울이 1:0으로 근소하게 승리할 것으로 예상됩니다..."
+      }
+      ```
 
 ---
 
 #### 내부 동작 구성
 
 1. **K리그 순위·폼 수집 – `KLeagueScraperService`**
-   - Selenium(ChromeDriver) + Jsoup 사용
-   - `https://www.kleague.com/record/team.do` 에 접속 후
-     - 그룹 A/B 순위 테이블(`#ts1`, `#ts2`)에서
-     - 팀명, 순위, 최근 5경기 폼(승·무·패)을 파싱
-   - `Standing(group, rank, team, recentForm)` 리스트로 반환
+    - Selenium(ChromeDriver) + Jsoup 사용
+    - `https://www.kleague.com/record/team.do` 에 접속 후
+        - 그룹 A/B 순위 테이블(`#ts1`, `#ts2`)에서
+        - 팀명, 순위, 최근 5경기 폼(승·무·패)을 파싱
+    - `Standing(group, rank, team, recentForm)` 리스트로 반환
 
 2. **프롬프트 생성 – `PromptBuilder`**
-   - **입력**
-     - `List<MyData> myList` : 사용자의 승인된 직관 기록(`attended = 1`)
-     - `List<Standing> standings` : 현재 리그 순위/폼
-     - `Schedule nextMatch` : 다음 경기 정보(홈/원정, 일시, 장소)
-   - **처리**
-     - 직관 승/무/패 카운트
-     - 순위/폼을 **마크다운 테이블 형식**으로 변환
-     - 다음 경기 정보를  
-       예) `"서울 vs 대구  2025년 4월 1일 19시 00분  장소: 상암월드컵경기장"`  
-       같은 문장으로 포맷팅
-     - “예측 요청/양식/근거 작성 방법”을 상세히 적은  
-       긴 한국어 프롬프트 문자열 생성
-   - **출력**
-     - OpenAI Chat API에 그대로 전달할 최종 `String prompt`
+    - **입력**
+        - `List<MyData> myList` : 사용자의 승인된 직관 기록(`attended = 1`)
+        - `List<Standing> standings` : 현재 리그 순위/폼
+        - `Schedule nextMatch` : 다음 경기 정보(홈/원정, 일시, 장소)
+    - **처리**
+        - 직관 승/무/패 카운트
+        - 순위/폼을 **마크다운 테이블 형식**으로 변환
+        - 다음 경기 정보를  
+          예) `"서울 vs 대구  2025년 4월 1일 19시 00분  장소: 상암월드컵경기장"`  
+          같은 문장으로 포맷팅
+        - “예측 요청/양식/근거 작성 방법”을 상세히 적은  
+          긴 한국어 프롬프트 문자열 생성
+    - **출력**
+        - OpenAI Chat API에 그대로 전달할 최종 `String prompt`
 
 3. **OpenAI 호출 – `OpenAiClientService`**
-   - `POST https://api.openai.com/v1/chat/completions`
-   - **Request Body**
-     ```json
-     {
-       "model": "gpt-4.1-mini",
-       "messages": [
-         { "role": "user", "content": "<PromptBuilder가 만든 프롬프트>" }
-       ],
-       "temperature": 0.2
-     }
-     ```
-   - 응답에서 `choices[0].message.content` 를 꺼내  
-     → 최종 예측 결과 텍스트로 사용
+    - `POST https://api.openai.com/v1/chat/completions`
+    - **Request Body**
+      ```json
+      {
+        "model": "gpt-4.1-mini",
+        "messages": [
+          { "role": "user", "content": "<PromptBuilder가 만든 프롬프트>" }
+        ],
+        "temperature": 0.2
+      }
+      ```
+    - 응답에서 `choices[0].message.content` 를 꺼내  
+      → 최종 예측 결과 텍스트로 사용
 
 ---
 
@@ -483,8 +582,7 @@ OpenAI API를 활용하여 하루 1회 텍스트 형태의 상세 예측 리포�
 
 ---
 
-
-### 5-5. **채팅 기능**
+### 5-4. **채팅 기능**
 
 <img width="841" height="155" alt="Image" src="https://github.com/user-attachments/assets/fb8501b5-40c1-4201-94b6-e0df9db97dad" />
 
@@ -651,14 +749,76 @@ Spring WebSocket + STOMP 기반의 실시간 통신으로 DM 방 생성, 저장,
 - [ChatRoomRepository.java](backend/src/main/java/com/myfcseoul/backend/repository/ChatRoomRepository.java)
 - [ChatMessageRepository.java](backend/src/main/java/com/myfcseoul/backend/repository/ChatMessageRepository.java)
 
-
-
 ---
 
-### 5-6. **랭킹 기능**
-
+### 5-5. **다이어리 기능**
+<img width="750" height="296" alt="Image" src="https://github.com/user-attachments/assets/c80bd3fa-5281-4071-90a8-a0c018fd8b9d" />
 <br>
+경기 직관 후 느낀 점과 사진을 다이어리 형태로 기록하고<br>
+다른 FC서울 팬들의 직관 기록도 함께 구경할 수 있도록 설계했습니다.
 
+#### API 설계
+
+1. **다이어리 생성 – `POST /api/gallery`**
+   - Request Body (JSON)
+     ```json
+     {
+       "userId": "4540681543",
+       "title": "수원전 3:0 완승 직관",
+       "content": "분위기 미쳤다…",
+       "imageUrl": "https://s3.../gallery/2025-04-01-xxxx.jpg",
+       "createdAt": "2025-04-01T18:30:00"
+     }
+     ```
+   - 처리 과정
+     - `userId`로 `UserRepository.findById(...)` 호출 → 작성자 `User` 엔티티 조회  
+     - `CreateGalleryRequestDTO` 의 필드를 이용해 `Gallery` 엔티티 생성  
+       - `user`, `title`, `content`, `imageUrl`, `createdAt` 세팅  
+     - `GalleryRepository.save(gallery)` 로 DB에 저장  
+   - 응답
+     - 생성된 `Gallery` 엔티티(JSON) + `201 CREATED`
+
+2. **특정 사용자의 다이어리 목록 조회 – `GET /api/gallery/{userId}`**
+   - 처리 과정
+     - Path Variable `{userId}`를 이용해  
+       `GalleryRepository.findByUserUserId(userId)` 호출  
+     - 해당 사용자의 다이어리 목록을 최신순 정렬은 프론트에서 수행
+   - 응답
+     - `Gallery` 리스트(JSON)  
+       - 각 항목에 `galleryId`, `title`, `content`, `imageUrl`, `createdAt`, `user` 정보 포함  
+       - 프론트에서 `/diary/{userId}` 페이지에 그리드 카드 형태로 렌더링
+
+3. **다이어리 수정 – `PUT /api/gallery/{galleryId}`**
+   - Request Body (JSON)
+     ```json
+     {
+       "title": "수원전 3:0 완승 직관 (사진 업데이트)",
+       "content": "후반 분위기 추가 기록...",
+       "imageUrl": "https://s3.../gallery/2025-04-01-updated.jpg",
+       "createdAt": "2025-04-01T18:30:00"
+     }
+     ```
+   - 처리 과정
+     - `galleryId`로 `GalleryRepository.findById(...)` 호출 → 기존 다이어리 조회  
+     - 작성자 `user`는 변경하지 않고,  
+       `title`, `content`, `imageUrl`, `createdAt` 필드만 업데이트  
+     - `GalleryRepository.save(existing)` 로 수정 내용 저장
+   - 응답
+     - 수정된 `Gallery` 엔티티(JSON)
+
+4. **다이어리 삭제 – `DELETE /api/gallery/{galleryId}`**
+   - 처리 과정
+     - `GalleryRepository.deleteById(galleryId)` 호출로 해당 다이어리 삭제
+   - 응답
+     - `204 No Content`
+
+#### 관련 소스 코드
+
+- [Gallery.java](backend/src/main/java/com/myfcseoul/backend/model/Gallery.java)
+- [GalleryRepository.java](backend/src/main/java/com/myfcseoul/backend/repository/GalleryRepository.java)
+- [GalleryController.java](backend/src/main/java/com/myfcseoul/backend/controller/GalleryController.java)
+- [CreateGalleryRequestDTO.java](backend/src/main/java/com/myfcseoul/backend/dto/CreateGalleryRequestDTO.java)
+  
 ---
 
 <br>

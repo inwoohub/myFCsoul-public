@@ -8,25 +8,15 @@ import java.util.List;
 public class RankingResponse {
 
     private List<AttendanceRankDTO> attendanceKings;
-    private List<CheerRankDTO>      cheerFairies;
     private List<WinRateRankDTO>    winFairies;    // ← 추가
 
     // Jackson 직렬화를 위한 기본 생성자
     public RankingResponse() {}
 
-    // 기존 생성자 (필요 없으면 지워도 됩니다)
-    public RankingResponse(List<AttendanceRankDTO> attendanceKings,
-                           List<CheerRankDTO>       cheerFairies) {
-        this.attendanceKings = attendanceKings;
-        this.cheerFairies    = cheerFairies;
-    }
-
     // 3개 리스트 모두 초기화용 생성자
     public RankingResponse(List<AttendanceRankDTO> attendanceKings,
-                           List<CheerRankDTO>       cheerFairies,
                            List<WinRateRankDTO>     winFairies) {
         this.attendanceKings = attendanceKings;
-        this.cheerFairies    = cheerFairies;
         this.winFairies      = winFairies;
     }
 
@@ -36,13 +26,6 @@ public class RankingResponse {
     }
     public void setAttendanceKings(List<AttendanceRankDTO> attendanceKings) {
         this.attendanceKings = attendanceKings;
-    }
-
-    public List<CheerRankDTO> getCheerFairies() {
-        return cheerFairies;
-    }
-    public void setCheerFairies(List<CheerRankDTO> cheerFairies) {
-        this.cheerFairies = cheerFairies;
     }
 
     public List<WinRateRankDTO> getWinFairies() {
@@ -56,7 +39,6 @@ public class RankingResponse {
     public String toString() {
         return "RankingResponse{" +
                 "attendanceKings=" + attendanceKings +
-                ", cheerFairies="  + cheerFairies  +
                 ", winFairies="    + winFairies    +  // ← 로깅에 포함
                 '}';
     }
