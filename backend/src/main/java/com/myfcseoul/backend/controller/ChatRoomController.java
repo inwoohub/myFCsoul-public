@@ -20,10 +20,6 @@ public class ChatRoomController {
         this.chatService = chatService;
     }
 
-    /**
-     * 두 사용자(senderId, receiverId) 간 방이 있으면 가져오고, 없으면 새로 만듭니다.
-     * 요청 예시: GET /api/chat/room?senderId=A&receiverId=B
-     */
     @GetMapping("/room")
     public Map<String, Long> getOrCreateRoom(
             @RequestParam("senderId")   String senderId,

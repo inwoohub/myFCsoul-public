@@ -32,33 +32,22 @@ public class ChatController {
 
     @MessageMapping("/chat/private")
     public void handlePrivateMessage(@Payload ChatMessageDTO dto) {
-        log.info("[WS-IN] senderId={}, receiverId={}, contentLen={}",
-                dto.getSenderId(), dto.getReceiverId(),
-                dto.getContent() == null ? 0 : dto.getContent().length());
 
         if (dto.getSenderId() == null || dto.getReceiverId() == null) {
-            log.warn("[WS-DROP] invalid payload: senderId or receiverId is null");
             return;
         }
         if (dto.getContent() == null || dto.getContent().isBlank()) {
-            log.warn("[WS-DROP] empty content");
             return;
         }
 
         try {
             ChatRoom room = chatService.getOrCreateRoom(dto.getSenderId(), dto.getReceiverId());
-            log.info("[ROOM] roomId={}, sender={}, receiver={}",
-                    room.getRoomId(), dto.getSenderId(), dto.getReceiverId());
 
             ChatMessage saved = chatService.saveMessage(
                     room.getRoomId(),
                     dto.getSenderId(),
                     dto.getContent()
             );
-
-
-            log.info("[DB-SAVE-OK] roomId={}, senderId={}, at={}",
-                    room.getRoomId(), dto.getSenderId(), saved.getSentAt());
 
             dto.setRoomId(room.getRoomId());
             dto.setSenderNickname(saved.getSender().getNickname());
@@ -69,7 +58,6 @@ public class ChatController {
                     "/queue/messages",
                     dto
             );
-            log.info("[WS-OUT] toUser={}, dest=/queue/messages", dto.getReceiverId());
 
         } catch (Exception e) {
             log.error("[DB-SAVE-FAIL] senderId={}, receiverId={}, err={}",
@@ -77,10 +65,6 @@ public class ChatController {
         }
     }
 
-    /**
-     * REST API: 과거 메시지 히스토리 조회
-     * GET /api/chat/{roomId}
-     */
     @GetMapping("/api/chat/{roomId}")
     public List<ChatMessageDTO> getChatHistory(@PathVariable Long roomId) {
         return chatService.getHistory(roomId).stream().map(m -> {

@@ -8,10 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
-    /**
-     * 두 유저(user1, user2)로 이미 생성된 방이 있는지 조회.
-     * (user1–user2 또는 user2–user1 순서 모두 지원)
-     */
+
     @Query("""
         SELECT r 
         FROM ChatRoom r
@@ -23,3 +20,4 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
             @Param("u2") String user2Id
     );
 }
+

@@ -26,9 +26,6 @@ public class ChatService {
         this.userRepo = userRepo;
     }
 
-    /**
-     * senderId와 receiverId로 기존 방 조회, 없으면 새로 생성
-     */
     @Transactional
     public ChatRoom getOrCreateRoom(String senderId, String receiverId) {
         return roomRepo.findByUsers(senderId, receiverId)
@@ -42,9 +39,6 @@ public class ChatService {
                 });
     }
 
-    /**
-     * roomId, senderId, content로 메시지 저장
-     */
     @Transactional
     public ChatMessage saveMessage(Long roomId, String senderId, String content) {
         ChatMessage msg = new ChatMessage();
@@ -56,9 +50,7 @@ public class ChatService {
         return msgRepo.saveAndFlush(msg); // ← 원하면 이렇게
     }
 
-    /**
-     * 방 내 과거 메시지 히스토리 조회
-     */
+
     @Transactional(readOnly = true)
     public List<ChatMessage> getHistory(Long roomId) {
         return msgRepo.findByRoomRoomIdOrderBySentAtAsc(roomId);
