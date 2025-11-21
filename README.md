@@ -847,39 +847,39 @@ Spring WebSocket + STOMP 기반의 실시간 통신으로 DM 방 생성, 저장,
     - 애플리케이션 로그 상에서는 특별한 예외가 보이지 않았지만 SSH 접속까지 느려질 정도로 서버 전체가 버벅이는 상태가 됨
 
 - **원인 분석**
-    1. 인스턴스 자체의 **물리 메모리(RAM)가 1GB로 매우 작음**
-    2. Spring Boot 애플리케이션 + 기타 프로세스를 동시에 구동하면서 가용 메모리가 거의 남지 않는 상태가 지속됨
-    3. RAM 이 부족해지면 OS는 메모리 확보를 위해 페이지를 계속 정리/교체하려고 시도하게 되고, 이 과정에서 **Context Switching·메모리 관리 오버헤드가 급격히 증가**하면서 CPU 사용률도 같이 튀게 됨
-    4. 결국:
-        - 새로 메모리를 할당받지 못한 프로세스가 비정상 동작하거나
-        - OOM(Out Of Memory) 상황으로 프로세스/서비스가 내려가면서
-          “서버가 다운된 것처럼 보이는” 현상이 반복되었음
+1. 인스턴스 자체의 **물리 메모리(RAM)가 1GB로 매우 작음**
+2. Spring Boot 애플리케이션 + 기타 프로세스를 동시에 구동하면서 가용 메모리가 거의 남지 않는 상태가 지속됨
+3. RAM 이 부족해지면 OS는 메모리 확보를 위해 페이지를 계속 정리/교체하려고 시도하게 되고, 이 과정에서 **Context Switching·메모리 관리 오버헤드가 급격히 증가**하면서 CPU 사용률도 같이 튀게 됨
+4. 결국:
+    - 새로 메모리를 할당받지 못한 프로세스가 비정상 동작하거나
+    - OOM(Out Of Memory) 상황으로 프로세스/서비스가 내려가면서
+      “서버가 다운된 것처럼 보이는” 현상이 반복되었음
 
 - **해결 방법 – Swap 파일 도입**
   > *Swap: 시스템 메모리(RAM)가 부족할 때 디스크의 일부를 임시 메모리처럼 사용하는 기능*
 
-    1. **2GB 크기의 Swap 파일 생성**
-       ```bash
-       dd if=/dev/zero of=/root/swapfile bs=1k count=2000000 conv=excl
-       ```
-    2. **권한 설정 (보안상 root만 접근 가능하도록 제한)**
-       ```bash
-       chmod 600 /root/swapfile
-       ```
-    3. **스왑 영역 초기화**
-       ```bash
-       mkswap /root/swapfile
-       ```
-    4. **Swap 활성화**
-       ```bash
-       swapon /root/swapfile
-       ```
-    5. **부팅 시 자동 활성화 설정 (`/etc/fstab` 등록)**
-       ```bash
-       /root/swapfile  swap  swap  defaults  0  0
-       ```
-    - 요약하면:  
-      **스왑 파일 생성 → 권한 설정 → 스왑 초기화 → 스왑 활성화 → 부팅 시 자동 활성화** 순서로 작업을 진행함
+1. **2GB 크기의 Swap 파일 생성**
+   ```bash
+   dd if=/dev/zero of=/root/swapfile bs=1k count=2000000 conv=excl
+   ```
+2. **권한 설정 (보안상 root만 접근 가능하도록 제한)**
+   ```bash
+   chmod 600 /root/swapfile
+   ```
+3. **스왑 영역 초기화**
+   ```bash
+   mkswap /root/swapfile
+   ```
+4. **Swap 활성화**
+   ```bash
+   swapon /root/swapfile
+   ```
+5. **부팅 시 자동 활성화 설정 (`/etc/fstab` 등록)**
+   ```bash
+   /root/swapfile  swap  swap  defaults  0  0
+   ```
+- 요약하면:  
+  **스왑 파일 생성 → 권한 설정 → 스왑 초기화 → 스왑 활성화 → 부팅 시 자동 활성화** 순서로 작업을 진행함
 
 - **결과**
   <img width="1246" height="272" alt="Image" src="https://github.com/user-attachments/assets/14b7e738-7781-4677-a4d9-b569e8585cdb" />
