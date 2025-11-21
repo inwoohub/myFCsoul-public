@@ -490,8 +490,7 @@ OpenAI API를 활용하여 하루 1회 텍스트 형태의 상세 예측 리포�
 
 <img width="856" height="441" alt="Image" src="https://github.com/user-attachments/assets/48be8a28-6ed9-4923-a81a-a662d399613a" />
 <br>
-Spring WebSocket + STOMP 기반의 실시간 통신으로<br>
-DM 방 생성, 저장, 조회까지 모두 서버에서 관리하며 사용자는 다른 유저와 실시간으로 메시지를 주고받을 수 있습니다.
+Spring WebSocket + STOMP 기반의 실시간 통신으로 DM 방 생성, 저장, 조회까지 모두 서버에서 관리하며 사용자는 다른 유저와 실시간으로 메시지를 주고받을 수 있습니다.
 <br>
 
 #### API 설계
@@ -543,14 +542,6 @@ DM 방 생성, 저장, 조회까지 모두 서버에서 관리하며 사용자�
           "content": "안녕하세요!",
           "senderNickname": "FC서울팬1",
           "sentAt": "2025-05-20 19:11:23.123"
-        },
-        {
-          "roomId": 12,
-          "senderId": "654321",
-          "receiverId": null,
-          "content": "반가워요!",
-          "senderNickname": "FC서울팬2",
-          "sentAt": "2025-05-20 19:11:30.456"
         }
       ]
       ```
@@ -624,22 +615,7 @@ DM 방 생성, 저장, 조회까지 모두 서버에서 관리하며 사용자�
       → `convertAndSendToUser(userId, "/queue/messages", ...)` 호출 시  
       실제 목적지 `/user/{userId}/queue/messages` 로 라우팅
 
-2. **채팅 도메인 모델 – `ChatRoom`, `ChatMessage`, `ChatMessageDTO`**
-    - `ChatRoom`
-        - `roomId` (PK, auto increment)
-        - `user1`, `user2` (`User` 엔티티와 `@ManyToOne`)
-        - `createdAt` (`@PrePersist` 로 생성 시각 자동 세팅)
-    - `ChatMessage`
-        - `messageId` (PK)
-        - `room` (`ChatRoom` 과 `@ManyToOne`)
-        - `sender` (`User` 와 `@ManyToOne`)
-        - `content` (TEXT)
-        - `sentAt` (`@PrePersist` 로 전송 시각 자동 세팅)
-    - `ChatMessageDTO`
-        - WebSocket/REST 입·출력용 DTO
-        - `roomId`, `senderId`, `receiverId`, `content`, `senderNickname`, `sentAt` 필드를 포함
-
-3. **비즈니스 로직 – `ChatService`**
+2. **비즈니스 로직 – `ChatService`**
     - `getOrCreateRoom(String senderId, String receiverId)`
         - `ChatRoomRepository.findByUsers(senderId, receiverId)`  
           로 두 유저 간 기존 방을 조회
@@ -653,7 +629,7 @@ DM 방 생성, 저장, 조회까지 모두 서버에서 관리하며 사용자�
         - `ChatMessageRepository.findByRoomRoomIdOrderBySentAtAsc(roomId)` 로  
           방 내 메시지 히스토리를 시간순으로 조회 (`@Transactional(readOnly = true)`)
 
-4. **컨트롤러 계층 – `ChatRoomController`, `ChatController`**
+3. **컨트롤러 계층 – `ChatRoomController`, `ChatController`**
     - `ChatRoomController`
         - `GET /api/chat/room`  
           → 두 사용자(senderId, receiverId) 간 DM 방을 조회하거나 없으면 생성  
